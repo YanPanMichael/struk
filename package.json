@@ -4,7 +4,6 @@
   "description": "📦 零配置 JavaScript、TypeScript、Vue 包构建工具，基于 Rollup",
   "author": "panyan <panyan@bilibili.com>",
   "license": "ISC",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://git.bilibili.co/blive-core/bbuilder"
