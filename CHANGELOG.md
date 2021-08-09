@@ -1,6 +1,13 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## 0.1.0 (2021-08-09)
+
+
+### Features
+
+* 初始化 ([4fde878](https://git.bilibili.co/blive-core/bbuilder/commit/4fde878f8a83afc2df7d013a717ec476e059fa25))
 
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/wannaxiao/dio/compare/v0.5.2...v0.6.0) (2019-11-04)
