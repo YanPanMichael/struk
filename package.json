@@ -1,7 +1,7 @@
 {
   "name": "@bilibili-live/bbuilder",
   "version": "0.1.2",
-  "description": "📦 基于Blive的 JS、TS、Vue 包构建工具",
+  "description": "📦 Blive基于rollup的JS、TS、Vue包构建工具 📦",
   "author": "panyan <panyan@bilibili.com>",
   "license": "ISC",
   "repository": {

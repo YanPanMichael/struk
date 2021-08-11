@@ -12,6 +12,7 @@ const postcss = require('rollup-plugin-postcss');
 const vue = require('rollup-plugin-vue');
 const autoprefixer = require('autoprefixer');
 const runtimePlugins = require('@babel/plugin-transform-runtime');
+const presetEnv = require('@babel/preset-env');
 
 module.exports = (bbuilderConfig, pkg, formatMapping) => {
   const commonPlugins = [
@@ -39,6 +40,16 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
     babel({
       extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
       babelHelpers: 'runtime',
+      presets: [
+        [presetEnv, {
+          'targets': {
+            'browsers': ['last 3 versions', '> 2%', 'ie >= 9', 'Firefox >= 30', 'Chrome >= 30']
+          },
+          // 'modules': false,
+          'loose': true,
+          'shippedProposals': true
+        }]
+      ],
       plugins: [runtimePlugins],
       exclude: 'node_modules/**',
     }),
