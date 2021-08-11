@@ -35,7 +35,7 @@ yarn build # 或 npm run build
 
 bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es', 'cjs'` 三种格式的构建包（包含未压缩和已压缩版本）。
 
-<img src="https://git.bilibili.co/blive-core/bbuilder/blob/master/docs/assets/cli.png?raw=true">
+<img src="https://git.bilibili.co/blive-core/bbuilder/-/blob/master/docs/assets/cli.png?raw=true">
 
 ### 自定义配置
 
@@ -49,6 +49,6 @@ bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'e
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+[ISC](http://opensource.org/licenses/ISC)
 
-Copyright (c) 2018-present, momoko
+Copyright (c) 2021-present, bilibili

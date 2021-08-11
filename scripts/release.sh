@@ -7,7 +7,7 @@ git add -A
 standard-version --commit-all --release-as $version
 
 # gh-pages
-git checkout -b gh-pages
+git checkout gh-pages
 git merge master
 git checkout master
 

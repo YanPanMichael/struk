@@ -33,15 +33,19 @@ module.exports = async (cliConfig) => {
       })
 
       // minimize
-      const minimizeCode = (bbuilderConfig.output.banner ? bbuilderConfig.output.banner + '\n' : '') + terser.minify(code, {
+      const minimizeRes = await terser.minify(code, {
+        // sourceMap: true,
         toplevel: true,
         output: {
           ascii_only: true,
         },
         compress: {
-          // pure_funcs: ['makeMap'],
+          drop_console: true,
+          pure_funcs: [ 'Math.floor' ]
         },
-      }).code
+      });
+      const minimizeCode = (bbuilderConfig.output.banner ? bbuilderConfig.output.banner + '\n' : '') + minimizeRes.code;
+
       fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
         if (err) console.error(err)
       })

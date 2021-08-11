@@ -1,5 +1,5 @@
 function B() {
-    console.log('bbb')
+    console.log('test typescript')
 }
 
 B();

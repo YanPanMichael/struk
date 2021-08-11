@@ -5,5 +5,5 @@
 module.exports = {
   es: '.esm',
   cjs: '.common',
-  umd: '',
+  umd: '.umd',
 }
