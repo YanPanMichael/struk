@@ -10,10 +10,10 @@
   },
   "keywords": [
     "rollup",
-    "webpack",
+    "bbuilder",
     "javascript bundler",
     "vue bundler",
-    "zero-config bundler",
+    "typescript bundler",
     "package-bundler"
   ],
   "bin": {
