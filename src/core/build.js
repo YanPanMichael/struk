@@ -41,13 +41,14 @@ module.exports = async (cliConfig) => {
           toplevel: true,
           output: {
             ascii_only: true,
+            comments: RegExp(`${pkg.name}`) // 排除所有不含 pkg.name 的 banner
           },
           compress: {
             drop_console: true,
             pure_funcs: ['Math.floor']
           },
         });
-        const minimizeCode = (bbuilderConfig.output.banner ? bbuilderConfig.output.banner + '\n' : '') + minimizeRes.code;
+        const minimizeCode = minimizeRes?.code || '';
 
         fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
           if (err) console.error(err)

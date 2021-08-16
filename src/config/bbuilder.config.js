@@ -19,11 +19,11 @@ module.exports = ({ pkg } = {}) => {
       format: ['umd', 'es', 'cjs', 'iife', 'amd'],
       // 顶部注释
       banner: `/*!
-        * ${pkg.name} with v${pkg.version}
-        * Author: ${pkg.author}
-        * Built on ${moment().format('YYYY-MM-DD, HH:mm:ss')}
-        * Released under the ${pkg.license} License Copyright (c) 2021-${new Date().getFullYear()}
-        */`,
+* ${pkg.name} with v${pkg.version}
+* Author: ${pkg.author}
+* Built on ${moment().format('YYYY-MM-DD, HH:mm:ss')}
+* Released under the ${pkg.license} License Copyright (c) 2021-${new Date().getFullYear()}
+*/`,
     },
     // 外部模块
     external: ['lodash', 'moment'],
