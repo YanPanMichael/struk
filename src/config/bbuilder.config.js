@@ -16,7 +16,7 @@ module.exports = ({ pkg } = {}) => {
       // 包名
       name: /\//.test(pkg.name) ? pkg.name.match(/\/(.+)/)[1] : pkg.name,
       // 格式
-      format: ['umd', 'es', 'cjs'],
+      format: ['umd', 'es', 'cjs', 'iife', 'amd'],
       // 顶部注释
       banner: `/*!
         * ${pkg.name} with v${pkg.version}
@@ -26,6 +26,6 @@ module.exports = ({ pkg } = {}) => {
         */`,
     },
     // 外部模块
-    external: [],
+    external: ['lodash', 'moment'],
   }
 }

@@ -22,6 +22,8 @@ module.exports = async (cliConfig) => {
 
   if (!fs.existsSync(bbuilderConfig.output.directory)) fs.mkdirSync(bbuilderConfig.output.directory)
 
+  const isProd = process.env.NODE_ENV === 'production';
+
   for (const config of rollupConfigs) {
     const spinner = ora(`📦 [${config.output.format}] ${bbuilderConfig.input} → ${config.output.file}.js`).start()
 
@@ -33,22 +35,24 @@ module.exports = async (cliConfig) => {
       })
 
       // minimize
-      const minimizeRes = await terser.minify(code, {
-        // sourceMap: true,
-        toplevel: true,
-        output: {
-          ascii_only: true,
-        },
-        compress: {
-          drop_console: true,
-          pure_funcs: [ 'Math.floor' ]
-        },
-      });
-      const minimizeCode = (bbuilderConfig.output.banner ? bbuilderConfig.output.banner + '\n' : '') + minimizeRes.code;
+      if (isProd) {
+        const minimizeRes = await terser.minify(code, {
+          // sourceMap: true,
+          toplevel: true,
+          output: {
+            ascii_only: true,
+          },
+          compress: {
+            drop_console: true,
+            pure_funcs: ['Math.floor']
+          },
+        });
+        const minimizeCode = (bbuilderConfig.output.banner ? bbuilderConfig.output.banner + '\n' : '') + minimizeRes.code;
 
-      fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
-        if (err) console.error(err)
-      })
+        fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
+          if (err) console.error(err)
+        })
+      }
     } catch (e) {
       console.error(`\n` + e)
       shell.exit(1)

@@ -21,7 +21,7 @@
   },
   "scripts": {
     "release": "sh scripts/release.sh",
-    "build": "node bin/bbuilder.js"
+    "build": "NODE_ENV=production node bin/bbuilder.js"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",

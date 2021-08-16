@@ -6,4 +6,6 @@ module.exports = {
   es: '.esm',
   cjs: '.common',
   umd: '.umd',
+  iife: '.iife',
+  amd: '.amd'
 }
