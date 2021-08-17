@@ -1,7 +1,7 @@
 /**
  * rollup 配置生成器
  */
-const path = require('path')
+const toString = require('lodash/toString')
 const resolve = require('@rollup/plugin-node-resolve').nodeResolve;
 const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
@@ -69,7 +69,12 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
     plugins: commonPlugins,
   }
 
-  return bbuilderConfig.output.format.reduce((acc, format) => {
+  const pkgDeps = !!pkg.dependencies ? Object.keys(pkg.dependencies).map(d => toString(d)) : [];
+
+  const rollupConfigRes = bbuilderConfig.output.format.reduce((acc, format) => {
+    const { external = [], isolateDep } = bbuilderConfig.formatConfig?.[format] ?? {};
+    const externals = !!isolateDep ? pkgDeps.concat(external) : external;
+
     const config = {
       ...baseConfig,
       output: {
@@ -77,11 +82,15 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
         file: `${bbuilderConfig.output.directory}/${bbuilderConfig.output.name}${formatMapping[format] ? `${formatMapping[format]}` : ''}`,
         format,
       },
+      external: [...new Set(externals)],
     }
 
-    return [
-      ...acc,
-      config,
-    ]
-  }, [])
+    if (config.formatConfig) {
+      delete config.formatConfig
+    }
+
+    return [...acc, config]
+  }, []);
+
+  return rollupConfigRes;
 }

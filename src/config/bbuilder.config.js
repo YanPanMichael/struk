@@ -25,7 +25,27 @@ module.exports = ({ pkg } = {}) => {
 * Released under the ${pkg.license} License Copyright (c) 2021-${new Date().getFullYear()}
 */`,
     },
-    // 外部模块
-    external: ['lodash', 'moment'],
+    formatConfig: {
+      umd: {
+        // 外部模块
+        external: ['lodash', 'moment'],
+        // 外部依赖不全部屏蔽
+        isolateDep: false,
+      },
+      es: {
+        external: ['lodash'],
+        isolateDep: true, // 外部依赖全部屏蔽
+      },
+      cjs: {
+        external: [],
+      },
+      iife: {
+        isolateDep: false,
+      },
+      amd: {
+        external: [],
+        isolateDep: false,
+      }
+    }
   }
 }
