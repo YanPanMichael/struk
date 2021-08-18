@@ -1,6 +1,6 @@
 {
   "name": "@bilibili-live/bbuilder",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "📦 基于rollup的JS、TS、Vue包构建工具 📦",
   "author": "panyan <panyan@bilibili.com>",
   "license": "ISC",
