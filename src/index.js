@@ -16,7 +16,7 @@ const cliConfig = {
 
 const command = yargs.argv._[0];
 
-console.log('💡✨Command:', command || 'runnding default');
+console.log('🚀 Command:', command || 'runnding default');
 
 if (command === undefined || command === 'build') {
   require('./core/build')(cliConfig)

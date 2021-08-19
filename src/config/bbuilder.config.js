@@ -6,7 +6,7 @@ const moment = require('moment')
 module.exports = ({ pkg } = {}) => {
   return {
     // 输入
-    input: 'examples/index.ts',
+    input: 'examples/index.js',
     // input: 'src/index.js',
 
     // 输出
