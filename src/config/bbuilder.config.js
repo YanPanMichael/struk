@@ -46,6 +46,7 @@ module.exports = ({ pkg } = {}) => {
         external: [],
         isolateDep: false,
       }
-    }
+    },
+    templateBase: 'examples/'
   }
 }

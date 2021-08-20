@@ -10,20 +10,22 @@ const url = require('rollup-plugin-url');
 const babel = require('@rollup/plugin-babel').babel;
 const typescript = require('@rollup/plugin-typescript');
 const postcss = require('rollup-plugin-postcss');
+const serve = require('rollup-plugin-serve');
+// const livereload = require('rollup-plugin-livereload');
 const vue = require('rollup-plugin-vue');
 const alias = require('@rollup/plugin-alias');
+const replace = require('@rollup/plugin-replace');
 const autoprefixer = require('autoprefixer');
 const presetEnv = require('@babel/preset-env');
 const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 // const syntaxDynamicImportPlugins = require('@babel/plugin-syntax-dynamic-import');
 // const proposalDecoratorsPlugins = require('@babel/plugin-proposal-decorators');
-// const proposalClassPropertiesPlugins = require('@babel/plugin-proposal-class-properties');
 const runtimePlugins = require('@babel/plugin-transform-runtime');
 
-const rootDir = path.resolve(__dirname, './src')
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 
-module.exports = (bbuilderConfig, pkg, formatMapping) => {
+module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
+  const version = process.env.VERSION || pkg.version;
   const commonPlugins = [
     peerDepsExternal(),
     resolve({
@@ -32,6 +34,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
     commonjs(),
     json(),
     url({ limit: 10 * 1024 }),
+    replace({
+      '__VERSION__': version,
+      '__ENV__': JSON.stringify(process.env.NODE_ENV)
+    }),
     typescript({
       exclude: ["node_modules/*"],
       allowJs: true, /* Allow javascript files to be compiled. */
@@ -42,7 +48,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
       typeRoots: [
         "node_modules/@types"
       ],
-      // declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")),
+      declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
       // declaration: true,
       // sourceMap: true,
       // declarationMap: true,
@@ -80,11 +86,15 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
       extensions: ['.css', '.styl', '.sass', '.scss'],
     }),
     alias({
-      resolve: ['.ts'],
+      resolve: ['.js', '.jsx', '.vue', '.ts'],
       entries: [
         {
           find: '@',
-          replacement: rootDir
+          replacement: path.resolve(process.cwd(), './src'),
+        },
+        {
+          find: '~',
+          replacement: path.resolve(process.cwd(), './src/utils/'),
         }
       ]
     }),
@@ -106,12 +116,28 @@ module.exports = (bbuilderConfig, pkg, formatMapping) => {
       plugins: [
         // syntaxDynamicImportPlugins,
         // [proposalDecoratorsPlugins, {"legacy": true}],
-        // [proposalClassPropertiesPlugins, {"loose": true}],
         runtimePlugins
       ],
       exclude: 'node_modules/**',
     }),
   ];
+
+  if(process.env.NODE_ENV !== 'production' && cliConfig.debug) {
+    commonPlugins.push(
+      serve({
+        open: true, // 是否打开浏览器
+        contentBase: path.resolve(process.cwd(), bbuilderConfig.templateBase??''), // 入口html文件位置
+        historyApiFallback: true, // return index.html instead of 404
+        host: 'localhost',
+        port: 3003,
+        verbose: true, // 打印输出serve路径
+      }),
+      // livereload({
+      //   watch: bbuilderConfig.output.directory,
+      //   port: 35729
+      // })
+    )
+  }
 
   const baseConfig = {
     ...bbuilderConfig,

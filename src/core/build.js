@@ -12,7 +12,7 @@ const rollupConfigGenerator = require('../core/rollup-config-generator')
 module.exports = async (cliConfig) => {
   const pkg = pkgLoader()
   const bbuilderConfig = configLoader(process.cwd(), pkg, cliConfig)
-  const rollupConfigs = rollupConfigGenerator(bbuilderConfig, pkg, formatMapping)
+  const rollupConfigs = rollupConfigGenerator(bbuilderConfig, pkg, formatMapping, cliConfig)
 
   if (cliConfig.debug) {
     console.log('\npkg: ', pkg)
