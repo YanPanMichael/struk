@@ -10,7 +10,6 @@ const url = require('rollup-plugin-url');
 const babel = require('@rollup/plugin-babel').babel;
 const typescript = require('@rollup/plugin-typescript');
 const postcss = require('rollup-plugin-postcss');
-const serve = require('rollup-plugin-serve');
 // const livereload = require('rollup-plugin-livereload');
 const vue = require('rollup-plugin-vue');
 const alias = require('@rollup/plugin-alias');
@@ -125,6 +124,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
   ];
 
   if(process.env.NODE_ENV !== 'production' && cliConfig.debug) {
+    const serve = require('rollup-plugin-serve');
     commonPlugins.push(
       serve({
         open: true, // 是否打开浏览器
