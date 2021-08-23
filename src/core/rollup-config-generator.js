@@ -21,6 +21,7 @@ const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 // const syntaxDynamicImportPlugins = require('@babel/plugin-syntax-dynamic-import');
 // const proposalDecoratorsPlugins = require('@babel/plugin-proposal-decorators');
 const runtimePlugins = require('@babel/plugin-transform-runtime');
+const filesize = require('rollup-plugin-filesize');
 
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 
@@ -48,7 +49,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       typeRoots: [
         "node_modules/@types"
       ],
-      declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
+      // declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
       // declaration: true,
       // sourceMap: true,
       // declarationMap: true,
@@ -120,6 +121,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       ],
       exclude: 'node_modules/**',
     }),
+    filesize(),
   ];
 
   if(process.env.NODE_ENV !== 'production' && cliConfig.debug) {
