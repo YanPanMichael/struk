@@ -36,13 +36,15 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     url({ limit: 10 * 1024 }),
     replace({
       '__VERSION__': version,
-      '__ENV__': JSON.stringify(process.env.NODE_ENV)
+      '__ENV__': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.BUILD': JSON.stringify('production'),
     }),
     typescript({
       exclude: ["node_modules/*"],
       allowJs: true, /* Allow javascript files to be compiled. */
       strict: true, /* Enable all strict type-checking options. */
-      importHelpers: true, // 通过tslib引入helper函数，文件必须是模块
+      // importHelpers: true, // 通过tsli÷b引入helper函数，文件必须是模块
       moduleResolution: "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
       allowSyntheticDefaultImports: true, /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
       typeRoots: [
@@ -51,24 +53,6 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       // declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
       // declaration: true,
       // sourceMap: true,
-      // declarationMap: true,
-      // lib: [
-      //   "dom",
-      //   "es5",
-      //   "es2015",
-      //   "es2016",
-      //   "es2017",
-      //   "esnext"
-      // ],
-      // module: "esnext",
-      // target: "ES5",
-      // downlevelIteration: true,
-      // resolveJsonModule: true,
-      // esModuleInterop: true,
-      // // baseUrl: ".",
-      // paths: {
-      //   "@/*":["src/*"]
-      // },
     }),
     vue({
       defaultLang: {
@@ -101,13 +85,13 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     babel({
       extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
       babelHelpers: 'runtime',
+      babelrc: false,
       presets: [
         [presetEnv, {
           'targets': {
             'browsers': ['last 3 versions', '> 2%', 'ie >= 9', 'Firefox >= 30', 'Chrome >= 30']
           },
           'modules': false,
-          "useBuiltIns": "usage",
           'loose': true,
           'shippedProposals': true
         }],
@@ -160,6 +144,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
         format,
       },
       external: [...new Set(externals)],
+      // sourceMap: true,
     }
 
     if (config.formatConfig) {
