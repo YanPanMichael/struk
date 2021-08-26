@@ -120,7 +120,7 @@ module.exports = ({ pkg } = {}) => {
 
 <br>
 <br>
-😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="#">Star</a></b> 感谢支持~
+😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="https://git.bilibili.co/blive-core/bbuilder">Star</a></b> 感谢支持~
 
 ## License
 
