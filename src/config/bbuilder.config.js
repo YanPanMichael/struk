@@ -6,13 +6,14 @@ const moment = require('moment')
 module.exports = ({ pkg } = {}) => {
   return {
     // 输入
-    input: 'examples/index.js',
-    // input: 'src/index.js',
+    input: 'src/index.js',
+    // input: 'examples/index.js',
 
     // 输出
     output: {
       // 目录
-      directory: 'examples/dist',
+      directory: 'dist',
+      // directory: 'examples/dist',
       // 包名
       name: /\//.test(pkg.name) ? pkg.name.match(/\/(.+)/)[1] : pkg.name,
       // 格式

@@ -31,7 +31,7 @@ npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
 npm run build # 或 yarn build
 ```
 
-bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es', 'cjs'` 三种格式的构建包（包含未压缩和已压缩版本）。
+bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es', 'cjs', 'iife', 'amd'` 五种格式的构建包（包含未压缩和已压缩版本）。
 
 <img src="https://git.bilibili.co/blive-core/bbuilder/-/blob/master/docs/assets/cli.png?raw=true">
 
