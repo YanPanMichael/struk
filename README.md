@@ -21,7 +21,7 @@ npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
 
 ```js
   "scripts": {
-    "build": "bbuilder"
+    "build": "NODE_ENV=production bbuilder build"
   },
 ```
 
@@ -55,12 +55,72 @@ bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'e
     }
   },
 ```
+debug状态会自动开启rollup-serve，可配置templateBase属性指定模版index.html所在路径
+```js
+  "formatConfig": {
+    templateBase: 'examples/',
+  },
+```
 
 [bbuilder 默认配置/配置示例](https://git.bilibili.co/blive-core/bbuilder/blob/master/src/config/bbuilder.config.js)
+```js
+/**
+ * bbuilder 默认配置
+ */
+module.exports = ({ pkg } = {}) => {
+  return {
+    // 输入
+    input: 'src/index.js',
+
+    // 输出
+    output: {
+      // 目录
+      directory: 'dist',
+      // 包名
+      name: /\//.test(pkg.name) ? pkg.name.match(/\/(.+)/)[1] : pkg.name,
+      // 格式
+      format: ['umd', 'es', 'cjs', 'iife', 'amd'],
+      // 顶部注释
+      banner: `/*!
+* ${pkg.name} with v${pkg.version}
+* Author: ${pkg.author}
+* Built on ${new Date().toLocaleDateString()}
+* Released under the ${pkg.license} License Copyright (c) 2021-${new Date().getFullYear()}
+*/`,
+    },
+    formatConfig: {
+      umd: {
+        // 打包屏蔽的外部模块
+        external: ['lodash', 'moment'],
+        // 外部dependences依赖不屏蔽
+        isolateDep: false,
+      },
+      es: {
+        external: ['lodash', 'moment'],
+        // 外部dependences依赖不屏蔽
+        isolateDep: true,
+      },
+      cjs: {
+        external: [],
+        isolateDep: false,
+      },
+      iife: {
+        external: [],
+        isolateDep: false,
+      },
+      amd: {
+        external: [],
+        isolateDep: false,
+      }
+    },
+    templateBase: 'examples/'
+  }
+}
+```
 
 <br>
 <br>
-😉😘 如果它对你有所帮助，可以点一下 <b>⭐️<a href="#">Star</a></b> ~
+😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="#">Star</a></b> 感谢支持~
 
 ## License
 

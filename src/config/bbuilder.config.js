@@ -27,14 +27,14 @@ module.exports = ({ pkg } = {}) => {
     },
     formatConfig: {
       umd: {
-        // 外部模块
+        // 打包屏蔽的外部模块
         external: ['lodash', 'moment'],
-        // 外部依赖不全部屏蔽
+        // 外部dependences依赖不屏蔽
         isolateDep: false,
       },
       es: {
-        external: ['lodash'],
-        isolateDep: true, // 外部依赖全部屏蔽
+        external: ['lodash', 'monent'],
+        isolateDep: true,
       },
       cjs: {
         external: [],
