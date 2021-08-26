@@ -92,12 +92,12 @@ module.exports = ({ pkg } = {}) => {
       umd: {
         // 打包屏蔽的外部模块
         external: ['lodash', 'moment'],
-        // 外部dependences依赖不屏蔽
+        // 外部pkg.dependences依赖不屏蔽
         isolateDep: false,
       },
       es: {
         external: ['lodash', 'moment'],
-        // 外部dependences依赖不屏蔽
+        // 自动屏蔽全部pkg.dependences依赖
         isolateDep: true,
       },
       cjs: {
