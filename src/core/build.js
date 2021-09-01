@@ -19,7 +19,6 @@ module.exports = async (cliConfig) => {
     if (rimErr) {
       console.error(`\n` + 'rimraf error: ' + rimErr)
       shell.exit(1)
-      return;
     }
 
     if (cliConfig.debug) {
@@ -38,9 +37,7 @@ module.exports = async (cliConfig) => {
       try {
         const bundle = await rollup.rollup(config)
         const { output: [{ code }] } = await bundle.generate(config.output)
-        fs.writeFile(`${config.output.file}.js`, code, (err) => {
-          err ? console.error('\n', err) : console.log('build success!!')
-        })
+        fs.writeFileSync(`${config.output.file}.js`, code)
 
         // minimize
         if (isProd) {
@@ -58,17 +55,15 @@ module.exports = async (cliConfig) => {
           });
           const minimizeCode = minimizeRes?.code || '';
 
-          fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
-            err ? console.error('\n', err) : console.log('terser success!!')
-          })
+          fs.writeFileSync(`${config.output.file}.min.js`, minimizeCode)
         }
       } catch (e) {
         console.error(`\n` + e)
-        spinner.fail()
+        spinner.fail('build error!!')
         shell.exit(1)
       }
-
-      spinner.succeed()
+      spinner.succeed('success!!')
     }
+    shell.exit(0)
   })
 }
