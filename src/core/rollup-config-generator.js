@@ -85,7 +85,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     babel({
       extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
       babelHelpers: 'runtime',
-      babelrc: false,
+      // babelrc: false,
       presets: [
         [presetEnv, {
           'targets': {

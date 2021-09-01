@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 function B() {
     console.log('test typescript')
     const name = _.assign({}, {name: 'test'})
@@ -41,6 +42,12 @@ class Man {
         return `防御力:${this.def},攻击力:${this.atk},血量:${this.hp}`;
     }
 }
+
+class C {
+    a: string = 'ttt'
+}
+
+export const c = new C();
 
 export const tony = new Man();
 console.log(`当前状态 ===> ${tony}`);
