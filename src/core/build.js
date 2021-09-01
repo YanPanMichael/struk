@@ -38,11 +38,9 @@ module.exports = async (cliConfig) => {
       try {
         const bundle = await rollup.rollup(config)
         const { output: [{ code }] } = await bundle.generate(config.output)
-        try {
-          fs.writeFileSync(`${config.output.file}.js`, code)
-        } catch (err) {
-          console.error('\n', err)
-        }
+        fs.writeFile(`${config.output.file}.js`, code, (err) => {
+          err ? console.error('\n', err) : console.log('build success!!')
+        })
 
         // minimize
         if (isProd) {
@@ -60,11 +58,9 @@ module.exports = async (cliConfig) => {
           });
           const minimizeCode = minimizeRes?.code || '';
 
-          try {
-            fs.writeFileSync(`${config.output.file}.min.js`, minimizeCode)
-          } catch (err) {
-            console.error('\n', err)
-          }
+          fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
+            err ? console.error('\n', err) : console.log('terser success!!')
+          })
         }
       } catch (e) {
         console.error(`\n` + e)
