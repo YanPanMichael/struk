@@ -33,14 +33,16 @@ module.exports = async (cliConfig) => {
     const isProd = process.env.NODE_ENV === 'production';
 
     for (const config of rollupConfigs) {
-      const spinner = ora(`📦 [${config.output.format}] ${bbuilderConfig.input} → ${config.output.file}.js`).start()
+      const spinner = ora(`📦 [${config.output.format}] ${bbuilderConfig.input} → ${config.output.file}.js \n`).start()
 
       try {
         const bundle = await rollup.rollup(config)
         const { output: [{ code }] } = await bundle.generate(config.output)
-        fs.writeFile(`${config.output.file}.js`, code, (err) => {
-          if (err) console.error(err)
-        })
+        try {
+          fs.writeFileSync(`${config.output.file}.js`, code)
+        } catch (err) {
+          console.error('\n', err)
+        }
 
         // minimize
         if (isProd) {
@@ -58,12 +60,15 @@ module.exports = async (cliConfig) => {
           });
           const minimizeCode = minimizeRes?.code || '';
 
-          fs.writeFile(`${config.output.file}.min.js`, minimizeCode, (err) => {
-            if (err) console.error(err)
-          })
+          try {
+            fs.writeFileSync(`${config.output.file}.min.js`, minimizeCode)
+          } catch (err) {
+            console.error('\n', err)
+          }
         }
       } catch (e) {
         console.error(`\n` + e)
+        spinner.fail()
         shell.exit(1)
       }
 
