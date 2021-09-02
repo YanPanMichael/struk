@@ -58,11 +58,11 @@ module.exports = async (cliConfig) => {
           fs.writeFileSync(`${config.output.file}.min.js`, minimizeCode)
         }
       } catch (e) {
+        spinner.fail('Oops, Packing error!!')
         console.error(`\n` + e)
-        spinner.fail('build error!!')
         shell.exit(1)
       }
-      spinner.succeed('success!!')
+      spinner.succeed('Construction complete!!')
     }
     shell.exit(0)
   })
