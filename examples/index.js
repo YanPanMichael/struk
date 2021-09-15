@@ -1,6 +1,16 @@
-// import A from '~/index';
+import atob from '~/atob';
+import A from '@/../examples/other.js'
+
+import _ from 'lodash';
+
+function B() {
+    console.log('test lodash')
+    const name = _.assign({}, {name: 'test'})
+    console.log(name + '');
+}
+
 class C {
-    // @enumerable(false)
+    @enumerable(false)
     method() { }
 }
 
@@ -11,14 +21,15 @@ function enumerable(value) {
     };
 }
 
-// @isTestable(true)
+@isTestable(true)
 class MyClass { 
     constructor() {
-        console.log('MyClass')
+        console.log('MyClass', this.isTestable)
     }
 }
 
 console.log(__ENV__);
+
 function isTestable(value) {
     return function decorator(target) {
         target.isTestable = value;
@@ -31,5 +42,8 @@ function mixin(Super) {
     mix() {}
   };
 }
+
+console.log(atob('test'))
+console.log(A.name)
 
 const ff = new Foo();

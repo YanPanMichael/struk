@@ -18,30 +18,59 @@ const autoprefixer = require('autoprefixer');
 const presetEnv = require('@babel/preset-env');
 const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 // const syntaxDynamicImportPlugins = require('@babel/plugin-syntax-dynamic-import');
-// const proposalDecoratorsPlugins = require('@babel/plugin-proposal-decorators');
+const proposalDecoratorsPlugins = require('@babel/plugin-proposal-decorators');
+const proposalClassPlugins = require('@babel/plugin-proposal-class-properties');
 const runtimePlugins = require('@babel/plugin-transform-runtime');
 const filesize = require('rollup-plugin-filesize');
 
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 
+// const Evaluator = require('stylus').Evaluator
+
+// const aliases = {
+//   '@' : path.resolve(process.cwd(), './src'),
+// }
+
+// const visitImport = Evaluator.prototype.visitImport
+// Evaluator.prototype.visitImport = function(imported) {
+//   const path = imported.path.first
+
+//   if (path.string.startsWith('~')) {
+//     const alias = Object.keys(aliases).find(entry => path.string.startsWith(`~${entry}`))
+
+//     if (alias)
+//       path.string = path.string.substr(1).replace(alias, aliases[alias])
+//   }
+
+//   return visitImport.call(this, imported)
+// }
+
 module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
   const version = process.env.VERSION || pkg.version;
   const commonPlugins = [
     peerDepsExternal(),
-    resolve({
-      extensions: ['.mjs', '.js', '.jsx', '.json', '.vue', '.ts'],
-    }),
-    commonjs(),
     json(),
-    url({ limit: 10 * 1024 }),
-    replace({
-      '__VERSION__': version,
-      '__ENV__': JSON.stringify('production'),
-      'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.BUILD': JSON.stringify('production'),
+    vue({
+      defaultLang: {
+        style: 'stylus',
+      },
+      template: {
+        // 强制生产模式
+        isProduction: true,
+      },
+      style: {
+        postcssPlugins: [autoprefixer],
+        // preprocessOptions: {
+        //   stylus: { Evaluator }
+        // }
+      },
+    }),
+    postcss({
+      extensions: ['.css', '.styl', '.sass', '.scss'],
     }),
     typescript({
       exclude: ["node_modules/*"],
+      // tsconfig: false,
       allowJs: true, /* Allow javascript files to be compiled. */
       strict: true, /* Enable all strict type-checking options. */
       // importHelpers: true, // 通过tsli÷b引入helper函数，文件必须是模块
@@ -53,34 +82,6 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       // declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
       // declaration: true,
       // sourceMap: true,
-    }),
-    vue({
-      defaultLang: {
-        style: 'stylus',
-      },
-      template: {
-        // 强制生产模式
-        isProduction: true,
-      },
-      style: {
-        postcssPlugins: [autoprefixer],
-      },
-    }),
-    postcss({
-      extensions: ['.css', '.styl', '.sass', '.scss'],
-    }),
-    alias({
-      resolve: ['.js', '.jsx', '.vue', '.ts'],
-      entries: [
-        {
-          find: '@',
-          replacement: path.resolve(process.cwd(), './src'),
-        },
-        {
-          find: '~',
-          replacement: path.resolve(process.cwd(), './src/utils/'),
-        }
-      ]
     }),
     babel({
       extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
@@ -99,20 +100,49 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       ],
       plugins: [
         // syntaxDynamicImportPlugins,
-        // [proposalDecoratorsPlugins, {"legacy": true}],
-        runtimePlugins
+        [proposalDecoratorsPlugins, { "legacy": true }],
+        [proposalClassPlugins, { "loose": true }],
+        runtimePlugins,
       ],
       exclude: 'node_modules/**',
+    }),
+    resolve({
+      extensions: ['.mjs', '.js', '.jsx', '.json', '.vue', '.ts']
+    }),
+    commonjs(),
+    url({ limit: 10 * 1024 }),
+    alias(
+      {
+        resolve: ['.js', '.jsx', '.vue', '.ts'],
+        entries: [
+          {
+            find: '@',
+            replacement: path.resolve(process.cwd(), './src'),
+          },
+          {
+            find: '~',
+            replacement: path.join(__dirname, '../../node_modules'),
+          }
+        ]
+      }
+    ),
+    replace({
+      preventAssignment: true,
+      '__VERSION__': version,
+      '__ENV__': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.DEBUG': 'false',
+      'process.argv': JSON.stringify(process.argv),
     }),
     filesize(),
   ];
 
-  if(process.env.NODE_ENV !== 'production' && cliConfig.debug) {
+  if (process.env.NODE_ENV !== 'production' && cliConfig.debug) {
     const serve = require('rollup-plugin-serve');
     commonPlugins.push(
       serve({
         open: true, // 是否打开浏览器
-        contentBase: path.resolve(process.cwd(), bbuilderConfig.templateBase??''), // 入口html文件位置
+        contentBase: path.resolve(process.cwd(), bbuilderConfig.templateBase ?? ''), // 入口html文件位置
         historyApiFallback: true, // return index.html instead of 404
         host: 'localhost',
         port: 3003,

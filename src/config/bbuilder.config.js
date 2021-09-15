@@ -17,7 +17,7 @@ module.exports = ({ pkg } = {}) => {
       // 包名
       name: /\//.test(pkg.name) ? pkg.name.match(/\/(.+)/)[1] : pkg.name,
       // 格式
-      format: ['umd', 'es', 'cjs', 'iife', 'amd'],
+      format: ['cjs', 'es', 'umd', 'iife', 'amd'],
       // 顶部注释
       banner: `/*!
 * ${pkg.name} with v${pkg.version}
@@ -27,7 +27,7 @@ module.exports = ({ pkg } = {}) => {
 */`,
     },
     formatConfig: {
-      umd: {
+      cjs: {
         // 打包屏蔽的外部模块
         external: ['lodash', 'moment'],
         // 外部pkg.dependences依赖不屏蔽
@@ -38,7 +38,7 @@ module.exports = ({ pkg } = {}) => {
         // 自动屏蔽全部pkg.dependences依赖
         isolateDep: true,
       },
-      cjs: {
+      umd: {
         external: [],
       },
       iife: {
