@@ -23,47 +23,72 @@ const proposalClassPlugins = require('@babel/plugin-proposal-class-properties');
 const runtimePlugins = require('@babel/plugin-transform-runtime');
 const filesize = require('rollup-plugin-filesize');
 
+// const sourcemaps = require('rollup-plugin-sourcemaps');
+// const terser = require('rollup-plugin-terser').terser;
+
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
+const isProd = require('../utils/index').isProd();
+const Evaluator = require('stylus').Evaluator
 
-// const Evaluator = require('stylus').Evaluator
+const aliases = {
+  '@': path.join(process.cwd(), './node_modules/@'),
+}
 
-// const aliases = {
-//   '@' : path.resolve(process.cwd(), './src'),
-// }
+const visitImport = Evaluator.prototype.visitImport
+Evaluator.prototype.visitImport = function (imported) {
+  const path = imported.path.first
 
-// const visitImport = Evaluator.prototype.visitImport
-// Evaluator.prototype.visitImport = function(imported) {
-//   const path = imported.path.first
+  if (path.string.startsWith('~')) {
+    const alias = Object.keys(aliases).find(entry => path.string.startsWith(`~${entry}`))
 
-//   if (path.string.startsWith('~')) {
-//     const alias = Object.keys(aliases).find(entry => path.string.startsWith(`~${entry}`))
+    if (alias)
+      path.string = path.string.substr(1).replace(alias, aliases[alias])
+  }
 
-//     if (alias)
-//       path.string = path.string.substr(1).replace(alias, aliases[alias])
-//   }
-
-//   return visitImport.call(this, imported)
-// }
+  return visitImport.call(this, imported)
+}
 
 module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
   const version = process.env.VERSION || pkg.version;
   const commonPlugins = [
     peerDepsExternal(),
+    resolve({
+      extensions: ['.mjs', '.js', '.jsx', '.json', '.vue', '.ts']
+    }),
     json(),
+    alias(
+      {
+        resolve: ['.js', '.jsx', '.vue', '.ts'],
+        entries: [
+          {
+            find: '@',
+            replacement: path.resolve(process.cwd(), './src'),
+          },
+          {
+            find: '~',
+            replacement: path.join(__dirname, '../../node_modules'),
+          }
+        ]
+      }
+    ),
     vue({
       defaultLang: {
         style: 'stylus',
       },
+      compileTemplate: true,
       template: {
         // 强制生产模式
         isProduction: true,
+        // optimizeSSR: true,
       },
       style: {
+        trim: false,
         postcssPlugins: [autoprefixer],
-        // preprocessOptions: {
-        //   stylus: { Evaluator }
-        // }
+        preprocessOptions: {
+          stylus: { Evaluator }
+        },
       },
+      css: true,
     }),
     postcss({
       extensions: ['.css', '.styl', '.sass', '.scss'],
@@ -79,9 +104,11 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       typeRoots: [
         "node_modules/@types"
       ],
+      experimentalDecorators: true,
       // declarationDir: path.dirname(pkg.types || pkg.typings || (bbuilderConfig.output.directory+"/*")), // 如果 tsconfig 中的 declarationDir 没有定义，则优先使用 package.json 中的 types 或 typings 定义的目录， 默认值：outputDir
       // declaration: true,
-      // sourceMap: true,
+      sourceMap: false,
+      inlineSources: true,
     }),
     babel({
       extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
@@ -106,26 +133,8 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       ],
       exclude: 'node_modules/**',
     }),
-    resolve({
-      extensions: ['.mjs', '.js', '.jsx', '.json', '.vue', '.ts']
-    }),
     commonjs(),
     url({ limit: 10 * 1024 }),
-    alias(
-      {
-        resolve: ['.js', '.jsx', '.vue', '.ts'],
-        entries: [
-          {
-            find: '@',
-            replacement: path.resolve(process.cwd(), './src'),
-          },
-          {
-            find: '~',
-            replacement: path.join(__dirname, '../../node_modules'),
-          }
-        ]
-      }
-    ),
     replace({
       preventAssignment: true,
       '__VERSION__': version,
@@ -134,6 +143,17 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
       'process.env.DEBUG': 'false',
       'process.argv': JSON.stringify(process.argv),
     }),
+    // !!isProd && terser({
+    //   toplevel: true,
+    //   output: {
+    //     ascii_only: true,
+    //     comments: RegExp(`${pkg.name}`) // 排除所有不含 pkg.name 的 banner
+    //   },
+    //   compress: {
+    //     drop_console: true,
+    //     pure_funcs: ['Math.floor']
+    //   },
+    // }),
     filesize(),
   ];
 
@@ -172,9 +192,9 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
         ...bbuilderConfig.output,
         file: `${bbuilderConfig.output.directory}/${bbuilderConfig.output.name}${formatMapping[format] ? `${formatMapping[format]}` : ''}`,
         format,
+        sourcemap: isProd,
       },
       external: [...new Set(externals)],
-      // sourceMap: true,
     }
 
     if (config.formatConfig) {

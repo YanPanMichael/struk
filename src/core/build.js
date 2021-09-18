@@ -9,6 +9,7 @@ const pkgLoader = require('../loader/pkg-loader')
 const configLoader = require('../loader/config-loader')
 const formatMapping = require('../core/format-mapping')
 const rollupConfigGenerator = require('../core/rollup-config-generator')
+const isProd = require('../utils/index').isProd();
 
 module.exports = async (cliConfig) => {
   const pkg = pkgLoader()
@@ -29,20 +30,18 @@ module.exports = async (cliConfig) => {
 
     if (!fs.existsSync(bbuilderConfig.output.directory)) fs.mkdirSync(bbuilderConfig.output.directory)
 
-    const isProd = process.env.NODE_ENV === 'production';
-
     for (const config of rollupConfigs) {
       const spinner = ora(`📦 [${config.output.format}] ${bbuilderConfig.input} → ${config.output.file}.js \n`).start()
 
       try {
         const bundle = await rollup.rollup(config)
-        const { output: [{ code }] } = await bundle.generate(config.output)
+        const { output: [{ code, map }] } = await bundle.generate(config.output)
+        // await bundle.write(config.output)
         fs.writeFileSync(`${config.output.file}.js`, code)
 
         // minimize
         if (isProd) {
           const minimizeRes = await terser.minify(code, {
-            // sourceMap: true,
             toplevel: true,
             output: {
               ascii_only: true,
@@ -56,10 +55,13 @@ module.exports = async (cliConfig) => {
           const minimizeCode = minimizeRes?.code || '';
 
           fs.writeFileSync(`${config.output.file}.min.js`, minimizeCode)
+          if (!!config.output.sourcemap && !!map) {
+            fs.writeFileSync(`${config.output.file}.min.js.map`, JSON.stringify(map))
+          }
         }
       } catch (e) {
         spinner.fail('Oops, Packing error!!')
-        console.error(`\n` + e)
+        console.error(`\n` + e.stack)
         shell.exit(1)
       }
       spinner.succeed('Construction complete!!')
