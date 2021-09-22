@@ -1,15 +1,15 @@
 import _ from 'lodash';
 
 function B() {
-    console.log('test typescript')
     const name = _.assign({}, {name: 'test'})
+    console.log('test typescript'+name)
 }
-function decorateArmour(num) {
-    return function (target, key, descriptor) {
+function decorateArmour(num: number) {
+    return function (target: any, descriptor: any) {
         const method = descriptor.value;
         let moreDef = num || 100;
         let ret;
-        descriptor.value = (...args) => {
+        descriptor.value = (...args:any) => {
             args[0] += moreDef;
             ret = method.apply(target, args);
             return ret;
@@ -19,7 +19,7 @@ function decorateArmour(num) {
 }
 
 
-function addFunc(target) {
+function addFunc(target: any) {
     target.prototype.addFunc = () => {
         return 'i am addFunc'
     }
@@ -28,12 +28,15 @@ function addFunc(target) {
 
 @addFunc 
 class Man {
+    def: number = 0;
+    atk: number = 0;
+    hp: number = 0;
     constructor(def = 2, atk = 3, hp = 3) {
         this.init(def, atk, hp);
     }
 
     @decorateArmour(20)
-    init(def, atk, hp) {
+    init(def:number, atk: number, hp: number) {
         this.def = def; // 防御值
         this.atk = atk;  // 攻击力
         this.hp = hp;  // 血量

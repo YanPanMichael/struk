@@ -1,4 +1,4 @@
-import atob from '~/atob';
+import atob from '-/atob';
 import A from '@/../examples/other.js'
 
 import _ from 'lodash';

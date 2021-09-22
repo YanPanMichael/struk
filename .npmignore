@@ -13,7 +13,6 @@ npm-debug.log
 node_modules
 config.gypi
 *.orig
-package-lock.json
 
 *.7z
 *.dmg
