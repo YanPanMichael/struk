@@ -195,8 +195,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
+                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
+                        declarationDir: bbuilderConfig.output.directory || "dist/types",
+                        useTsconfigDeclarationDir: false,
                         emitDeclarationOnly: true,
                     }),
                 ],
@@ -207,8 +209,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     // Only use typescript for declarations - babel will
                     // do actual js transformations
                     typescript({
+                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
+                        declarationDir: bbuilderConfig.output.directory || "dist/types",
+                        useTsconfigDeclarationDir: false,
                         emitDeclarationOnly: true,
                     }),
                     babel({
@@ -272,8 +276,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
+                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
+                        declarationDir: bbuilderConfig.output.directory || "dist/types",
+                        useTsconfigDeclarationDir: false,
                         emitDeclarationOnly: true,
                     }),
                 ],
@@ -331,8 +337,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
+                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
+                        declarationDir: bbuilderConfig.output.directory || "dist/types",
+                        useTsconfigDeclarationDir: false,
                         emitDeclarationOnly: true,
                     }),
                 ],
