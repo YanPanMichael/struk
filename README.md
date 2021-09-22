@@ -21,9 +21,11 @@ npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
 
 ```js
   "scripts": {
-    "build": "NODE_ENV=production bbuilder build"
+    "build": "NODE_ENV=production bbuilder build --source=js"
   },
 ```
+
+需要通过参数`source`指定构建打包源文件格式，其取值为`'js', 'ts', 'vue'`三种格式之一。
 
 **第二步**：命令行进入项目目录，运行：
 
