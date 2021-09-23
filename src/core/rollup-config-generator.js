@@ -65,7 +65,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
     const { sourceFormat } = cliConfig;
 
-    console.log('aaa==>>', path.resolve(bbuilderConfig.output.directory, './types'))
+    // console.log('bbbbbbb==>>', path.resolve(bbuilderConfig.output.directory, './types'))
     // delete bbuilderConfig.templateBase
 
     const baseConfig = {
@@ -100,7 +100,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     }
                 ]
             }),
-            // stylus()
+            // stylus(),
             css()
         ],
         vue: {
@@ -135,12 +135,19 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             exclude: 'node_modules/**',
             extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
             babelHelpers: 'bundled',
-            // plugins: [
-            //     // syntaxDynamicImportPlugins,
-            //     [proposalDecoratorsPlugins, { "legacy": true }],
-            //     [proposalClassPlugins, { "loose": true }],
-            //     // runtimePlugins,
-            // ],
+            plugins: [
+                // syntaxDynamicImportPlugins,
+                [proposalDecoratorsPlugins, { "legacy": true }],
+                [proposalClassPlugins, { "loose": true }],
+                // runtimePlugins,
+            ],
+        },
+        tsConfig: {
+            check: false,
+            tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
+            typescript: ttypescript,
+            useTsconfigDeclarationDir: true,
+            emitDeclarationOnly: true,
         },
         postBase: [
             filesize(),
@@ -194,13 +201,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 'ts': [
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
-                    typescript({
-                        check: false,
-                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
-                        typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
-                        emitDeclarationOnly: true,
-                    }),
+                    typescript(basePlugins.tsConfig),
                 ],
                 'vue': [
                     ...basePlugins.preConfig,
@@ -208,13 +209,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.postConfig,
                     // Only use typescript for declarations - babel will
                     // do actual js transformations
-                    typescript({
-                        check: false,
-                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
-                        typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
-                        emitDeclarationOnly: true,
-                    }),
+                    typescript(basePlugins.tsConfig),
                     babel({
                         ...basePlugins.babel,
                         presets: [
@@ -275,13 +270,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 'ts': [
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
-                    typescript({
-                        check: false,
-                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
-                        typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
-                        emitDeclarationOnly: true,
-                    }),
+                    typescript(basePlugins.tsConfig),
                 ],
                 'vue': [
                     ...basePlugins.preConfig,
@@ -293,7 +282,20 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                         },
                     }),
                     ...basePlugins.postConfig,
-                    babel(basePlugins.babel),
+                    typescript(basePlugins.tsConfig),
+                    babel({
+                        ...basePlugins.babel,
+                        presets: [
+                            [presetEnv, {
+                                'targets': {
+                                    'browsers': ['last 3 versions', '> 2%', 'ie >= 9', 'Firefox >= 30', 'Chrome >= 30']
+                                },
+                                'modules': false,
+                                'loose': true,
+                                'shippedProposals': true
+                            }],
+                        ],
+                    }),
                 ]
             }
 
@@ -336,18 +338,13 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 'ts': [
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
-                    typescript({
-                        check: false,
-                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
-                        typescript: ttypescript,
-                        useTsconfigDeclarationDir: true,
-                        emitDeclarationOnly: true,
-                    }),
+                    typescript(basePlugins.tsConfig),
                 ],
                 'vue': [
                     ...basePlugins.preConfig,
                     vue(basePlugins.vue),
                     ...basePlugins.postConfig,
+                    typescript(basePlugins.tsConfig),
                     babel(basePlugins.babel),
                     // !!isProd && terser({
                     //   toplevel: true,
