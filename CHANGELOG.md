@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.4](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.3...v0.4.4) (2021-09-23)
+
+
+### Features
+
+* 恢复tsconfig里面配置 ([bc70ce6](https://git.bilibili.co/blive-core/bbuilder/commit/bc70ce6bcd6faa34c1c0d0812f7335b97ae60e9f))
+
 ### [0.4.3](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.2...v0.4.3) (2021-09-23)
 
 ### [0.4.2](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.1...v0.4.2) (2021-09-22)
