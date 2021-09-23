@@ -10,7 +10,6 @@ const json = require('@rollup/plugin-json');
 const url = require('rollup-plugin-url');
 // const livereload = require('rollup-plugin-livereload');
 const alias = require('@rollup/plugin-alias');
-
 // const stylus = require('rollup-plugin-stylus-compiler');
 const css = require('rollup-plugin-css-porter');
 const vue = require('rollup-plugin-vue');
@@ -66,6 +65,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
     const { sourceFormat } = cliConfig;
 
+    console.log('aaa==>>', path.resolve(bbuilderConfig.output.directory, './types'))
     // delete bbuilderConfig.templateBase
 
     const baseConfig = {
@@ -195,10 +195,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
-                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
+                        check: false,
+                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        declarationDir: bbuilderConfig.output.directory || "dist/types",
-                        useTsconfigDeclarationDir: false,
+                        useTsconfigDeclarationDir: true,
                         emitDeclarationOnly: true,
                     }),
                 ],
@@ -209,10 +209,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     // Only use typescript for declarations - babel will
                     // do actual js transformations
                     typescript({
-                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
+                        check: false,
+                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        declarationDir: bbuilderConfig.output.directory || "dist/types",
-                        useTsconfigDeclarationDir: false,
+                        useTsconfigDeclarationDir: true,
                         emitDeclarationOnly: true,
                     }),
                     babel({
@@ -276,10 +276,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
-                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
+                        check: false,
+                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        declarationDir: bbuilderConfig.output.directory || "dist/types",
-                        useTsconfigDeclarationDir: false,
+                        useTsconfigDeclarationDir: true,
                         emitDeclarationOnly: true,
                     }),
                 ],
@@ -337,10 +337,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                     ...basePlugins.preConfig,
                     ...basePlugins.postConfig,
                     typescript({
-                        tsconfig: path.join(__dirname, '../../tsconfig.json'),
+                        check: false,
+                        tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
                         typescript: ttypescript,
-                        declarationDir: bbuilderConfig.output.directory || "dist/types",
-                        useTsconfigDeclarationDir: false,
+                        useTsconfigDeclarationDir: true,
                         emitDeclarationOnly: true,
                     }),
                 ],

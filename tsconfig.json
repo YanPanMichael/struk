@@ -3,7 +3,7 @@
         "strict": true,
         "allowJs": true, /* Allow javascript files to be compiled. */
         "declaration": true,
-        // "declarationDir": "dist/types",
+        "declarationDir": "dist/types",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "importHelpers": true,
