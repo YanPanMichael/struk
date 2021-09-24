@@ -143,14 +143,14 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
         },
         tsConfig: {
             check: false,
-            tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
+            // tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
             tsconfigOverride: {
                 compilerOptions: {
                     declarationDir: path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`)
                 }
             },
-            useTsconfigDeclarationDir: false,
-            emitDeclarationOnly: true,
+            useTsconfigDeclarationDir: true,
+            // emitDeclarationOnly: true,
             typescript: ttypescript,
         },
         postBase: [
