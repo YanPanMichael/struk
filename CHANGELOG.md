@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.7](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.6...v0.4.7) (2021-09-24)
+
+
+### Features
+
+* 修复d.ts文件生成 ([0fc04e3](https://git.bilibili.co/blive-core/bbuilder/commit/0fc04e302fefff0ded2562b03fdada783999b8ec))
+
 ### [0.4.6](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.5...v0.4.6) (2021-09-24)
 
 
