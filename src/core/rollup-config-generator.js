@@ -15,7 +15,7 @@ const css = require('rollup-plugin-css-porter');
 const vue = require('rollup-plugin-vue');
 // const stylus = require('rollup-plugin-stylus');
 // const vuePugPlugin = require('vue-pug-plugin')
-// const postcss = require('rollup-plugin-postcss');
+const postcss = require('rollup-plugin-postcss');
 const ttypescript = require('ttypescript');
 const typescript = require('rollup-plugin-typescript2');
 const presetEnv = require('@babel/preset-env');
@@ -47,8 +47,9 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     const { sourceFormat } = cliConfig;
 
     const stylusAlias = bbuilderConfig.stylusAlias;
-    const Evaluator = require('stylus').Evaluator
-    
+    const Evaluator = require('stylus').Evaluator;
+
+    console.log('asdfasdf', path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`));
     if (!!stylusAlias) {
         const visitImport = Evaluator.prototype.visitImport;
         Evaluator.prototype.visitImport = function (imported) {
@@ -95,7 +96,11 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 ]
             }),
             // stylus(),
-            css()
+            postcss({
+                extensions: ['.css', '.styl', '.sass', '.scss'],
+                modules: true,
+            }),
+            css(),
         ],
         vue: {
             defaultLang: {
@@ -113,7 +118,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             },
             style: {
                 // trim: false,
-                // postcssPlugins: [autoprefixer],
+                postcssPlugins: [autoprefixer],
                 preprocessOptions: {
                     stylus: { Evaluator }
                 },
@@ -139,9 +144,14 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
         tsConfig: {
             check: false,
             tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
-            typescript: ttypescript,
-            useTsconfigDeclarationDir: true,
+            tsconfigOverride: {
+                compilerOptions: {
+                    declarationDir: path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`)
+                }
+            },
+            useTsconfigDeclarationDir: false,
             emitDeclarationOnly: true,
+            typescript: ttypescript,
         },
         postBase: [
             filesize(),
@@ -392,6 +402,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
         if (config.templateBase) {
             delete config.templateBase
+        }
+
+        if (config.stylusAlias) {
+            delete config.stylusAlias
         }
 
         return [...acc, config]

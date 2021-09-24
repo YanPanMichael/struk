@@ -22,3 +22,5 @@ config.gypi
 *.rar
 *.tar
 *.zip
+
+examples

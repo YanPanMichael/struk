@@ -21,7 +21,7 @@
   },
   "scripts": {
     "release": "sh scripts/release.sh",
-    "build": "NODE_ENV=production node bin/bbuilder.js --source=js"
+    "build": "NODE_ENV=production node bin/bbuilder.js --source=ts"
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
@@ -45,12 +45,14 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "ora": "^5.4.0",
+    "postcss": "^8.3.7",
     "pug": "^3.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
     "rollup-plugin-css-porter": "^1.0.2",
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-stylus": "^1.0.4",
     "rollup-plugin-stylus-compiler": "^1.0.1",
