@@ -7,12 +7,12 @@ const mergeWith = require('lodash/mergeWith')
 const isArray = require('lodash/isArray')
 
 module.exports = (cwd = process.cwd(), pkg, cliConfig) => {
-  const defaultConfig = require('../config/bbuilder.config.js')({ pkg })
+  const defaultConfig = require('../config/bbuilder.config.js')({ pkg, cwd })
   const configPath = `${cwd}/blive.config.js`
 
   if (fs.existsSync(configPath)) {
     let config = require(configPath)
-    if (typeof config === 'function') config = config({ pkg, defaultConfig })
+    if (typeof config === 'function') config = config({ pkg, cwd, defaultConfig })
     return mergeWith(defaultConfig, config, function(objValue, srcValue) {
       if (isArray(objValue)) {
         return objValue = srcValue;

@@ -2,8 +2,9 @@
  * bbuilder 默认配置
  */
 const moment = require('moment')
+const path = require('path')
 
-module.exports = ({ pkg } = {}) => {
+module.exports = ({ pkg, cwd } = {}) => {
   return {
     // 输入
     input: 'src/index.js',
@@ -49,6 +50,9 @@ module.exports = ({ pkg } = {}) => {
         isolateDep: false,
       }
     },
-    templateBase: 'examples/'
+    templateBase: 'examples/',
+    stylusAlias: {
+        '@': path.join(cwd, './node_modules/@')
+    }
   }
 }

@@ -41,32 +41,26 @@ const globals = {
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 const isProd = require('../utils/index').isProd();
 
-const Evaluator = require('stylus').Evaluator
-const vueAliases = {
-    '@': path.join(process.cwd(), './node_modules/@'),
-}
-
-const visitImport = Evaluator.prototype.visitImport
-Evaluator.prototype.visitImport = function (imported) {
-    const path = imported.path.first
-
-    if (path.string.startsWith('~')) {
-        const alias = Object.keys(vueAliases).find(entry => path.string.startsWith(`~${entry}`))
-
-        if (alias)
-            path.string = path.string.substr(1).replace(alias, vueAliases[alias])
-    }
-
-    return visitImport.call(this, imported)
-}
-
 module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     const version = process.env.VERSION || pkg.version;
 
     const { sourceFormat } = cliConfig;
 
-    // console.log('bbbbbbb==>>', path.resolve(bbuilderConfig.output.directory, './types'))
-    // delete bbuilderConfig.templateBase
+    const stylusAlias = bbuilderConfig.stylusAlias;
+    const Evaluator = require('stylus').Evaluator
+    
+    if (!!stylusAlias) {
+        const visitImport = Evaluator.prototype.visitImport;
+        Evaluator.prototype.visitImport = function (imported) {
+            const path = imported.path.first
+            if (path.string.startsWith('~')) {
+                const alias = Object.keys(stylusAlias).find(entry => path.string.startsWith(`~${entry}`))
+                if (alias)
+                    path.string = path.string.substr(1).replace(alias, stylusAlias[alias])
+            }
+            return visitImport.call(this, imported)
+        }
+    }
 
     const baseConfig = {
         ...bbuilderConfig,
