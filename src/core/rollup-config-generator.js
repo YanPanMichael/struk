@@ -49,7 +49,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     const stylusAlias = bbuilderConfig.stylusAlias;
     const Evaluator = require('stylus').Evaluator;
 
-    console.log('asdfasdf', path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`));
+    // console.log('asdfasdf', path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`));
     if (!!stylusAlias) {
         const visitImport = Evaluator.prototype.visitImport;
         Evaluator.prototype.visitImport = function (imported) {

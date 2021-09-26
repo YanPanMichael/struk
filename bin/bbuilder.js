@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('cross-env')(require('../src/index.js'))
+require('../src/index.js')()

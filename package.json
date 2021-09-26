@@ -19,6 +19,7 @@
   "bin": {
     "bbuilder": "bin/bbuilder.js"
   },
+  "main": "src/index.js",
   "scripts": {
     "release": "sh scripts/release.sh",
     "build": "NODE_ENV=production node bin/bbuilder.js --source=ts"
@@ -41,7 +42,6 @@
     "@vue/cli-service": "^4.5.13",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "autoprefixer": "^9.8.6",
-    "cross-env": "^7.0.3",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "ora": "^5.4.0",

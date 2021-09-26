@@ -11,9 +11,9 @@ const formatMapping = require('../core/format-mapping')
 const rollupConfigGenerator = require('../core/rollup-config-generator')
 const isProd = require('../utils/index').isProd();
 
-module.exports = async (cliConfig) => {
+module.exports = async (cliConfig, custumConfig) => {
   const pkg = pkgLoader()
-  const bbuilderConfig = configLoader(process.cwd(), pkg, cliConfig)
+  const bbuilderConfig = configLoader(process.cwd(), pkg, cliConfig, custumConfig)
   const rollupConfigs = rollupConfigGenerator(bbuilderConfig, pkg, formatMapping, cliConfig)
 
   rimraf(bbuilderConfig.output.directory, async (rimErr) => {
