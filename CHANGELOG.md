@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.7...v0.5.0) (2021-09-26)
+
+
+### Features
+
+* 抛出bbuilder 增加customConfig ([4c57157](https://git.bilibili.co/blive-core/bbuilder/commit/4c57157fd761ec05dda6d3ce498caaed1bbd5bee))
+
 ### [0.4.7](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.6...v0.4.7) (2021-09-24)
 
 
