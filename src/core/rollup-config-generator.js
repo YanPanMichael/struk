@@ -127,6 +127,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
         postConfig: [
             resolve({
                 extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+                mainFields: ["jsnext:main", "preferBuiltins", "browser"]
             }),
             commonjs(),
         ],

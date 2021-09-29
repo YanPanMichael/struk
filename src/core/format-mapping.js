@@ -4,7 +4,7 @@
 
 module.exports = {
   es: '.esm',
-  cjs: '.common',
+  cjs: '.cjs',
   umd: '.umd',
   iife: '.iife',
   amd: '.amd'
