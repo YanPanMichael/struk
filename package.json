@@ -1,6 +1,6 @@
 {
   "name": "@bilibili-live/bbuilder",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "📦 基于rollup的JS、TS、Vue包构建工具 📦",
   "author": "panyan <panyan@bilibili.com>",
   "license": "ISC",
@@ -23,6 +23,7 @@
   "scripts": {
     "release": "sh scripts/release.sh",
     "addVernMirror": "standard-version -r minor --preMajor true",
+    "addVernMajor": "standard-version -r major --preMajor true",
     "addVernPreRel": "standard-version -p Alpha --preMajor true --dry-run",
     "build": "NODE_ENV=production node bin/bbuilder.js --source=ts"
   },
