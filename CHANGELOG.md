@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://git.bilibili.co/blive-core/bbuilder/compare/v0.5.0...v0.5.1) (2021-09-29)
+
+
+### Features
+
+* add resolve mainFields ([22e73df](https://git.bilibili.co/blive-core/bbuilder/commit/22e73dfd32f437650ab94970d75c7fc79eebcff8))
+
 ## [0.5.0](https://git.bilibili.co/blive-core/bbuilder/compare/v0.4.7...v0.5.0) (2021-09-26)
 
 
