@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://git.bilibili.co/blive-core/bbuilder/compare/v1.0.1...v1.1.0) (2021-10-14)
+
+
+### Features
+
+* cjs和esm开头加入peerdeps隔离 ([78c0665](https://git.bilibili.co/blive-core/bbuilder/commit/78c06656bce670dde0d462ef0d5f992b57d50af2))
+
 ### [1.0.1](https://git.bilibili.co/blive-core/bbuilder/compare/v1.0.0...v1.0.1) (2021-09-29)
 
 ## [1.0.0](https://git.bilibili.co/blive-core/bbuilder/compare/v0.5.1...v1.0.0) (2021-09-29)
