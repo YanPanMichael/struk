@@ -70,7 +70,6 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
     const basePlugins = {
         preBase: [
-            peerDepsExternal(),
             json(),
             // url({ limit: 10 * 1024 }),
             replace({
@@ -132,7 +131,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             commonjs(),
         ],
         babel: {
-            exclude: 'node_modules/**',
+            exclude: ['node_modules/**', 'blive.config.js'],
             extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
             babelHelpers: 'bundled',
             plugins: [
@@ -174,11 +173,13 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     }
 
     function mapFormatToConfig(format, sourceFormat) {
+        // esm格式配置
         if (format === 'es') {
             const esPluginMap = {
                 'js': [
                     ...basePlugins.preConfig,
                     babel({
+                        exclude: ['node_modules/**', 'blive.config.js'],
                         extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
                         babelHelpers: 'runtime',
                         // babelrc: false,
@@ -197,7 +198,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                             // syntaxDynamicImportPlugins,
                             [proposalDecoratorsPlugins, { "legacy": true }],
                             [proposalClassPlugins, { "loose": true }],
-                            runtimePlugins,
+                            [runtimePlugins, { "useESModules": true }],
                         ],
                         exclude: 'node_modules/**',
                     }),
@@ -235,6 +236,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             const esConfig = {
                 ...baseConfig,
                 plugins: [
+                    peerDepsExternal(),
                     ...basePlugins.preBase,
                     ...esPlugins,
                     ...basePlugins.postBase
@@ -243,11 +245,13 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             return esConfig;
         };
 
-        if (format === 'cjs' || format === 'umd') {
-            const umdPluginMap = {
+        // commonjs格式配置
+        if (format === 'cjs') {
+            const cjsPluginMap = {
                 'js': [
                     ...basePlugins.preConfig,
                     babel({
+                        exclude: ['node_modules/**', 'blive.config.js'],
                         extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
                         babelHelpers: 'runtime',
                         // babelrc: false,
@@ -266,7 +270,83 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                             // syntaxDynamicImportPlugins,
                             [proposalDecoratorsPlugins, { "legacy": true }],
                             [proposalClassPlugins, { "loose": true }],
-                            runtimePlugins,
+                            [runtimePlugins, { "useESModules": false }],
+                        ],
+                        exclude: 'node_modules/**',
+                    }),
+                    ...basePlugins.postConfig
+                ],
+                'ts': [
+                    ...basePlugins.preConfig,
+                    ...basePlugins.postConfig,
+                    typescript(basePlugins.tsConfig),
+                ],
+                'vue': [
+                    ...basePlugins.preConfig,
+                    vue({
+                        ...basePlugins.vue,
+                        template: {
+                            ...basePlugins.vue.template,
+                            optimizeSSR: true,
+                        },
+                    }),
+                    ...basePlugins.postConfig,
+                    typescript(basePlugins.tsConfig),
+                    babel({
+                        ...basePlugins.babel,
+                        presets: [
+                            [presetEnv, {
+                                'targets': {
+                                    'browsers': ['last 3 versions', '> 2%', 'ie >= 9', 'Firefox >= 30', 'Chrome >= 30']
+                                },
+                                'modules': false,
+                                'loose': true,
+                                'shippedProposals': true
+                            }],
+                        ],
+                    }),
+                ]
+            }
+
+            const cjsPlugins = cjsPluginMap[sourceFormat] || [];
+            const cjsConfig = {
+                ...baseConfig,
+                plugins: [
+                    peerDepsExternal(),
+                    ...basePlugins.preBase,
+                    ...cjsPlugins,
+                    ...basePlugins.postBase
+                ]
+            }
+            return cjsConfig;
+        }
+
+        // umd格式配置
+        if (format === 'umd') {
+            const umdPluginMap = {
+                'js': [
+                    ...basePlugins.preConfig,
+                    babel({
+                        exclude: ['node_modules/**', 'blive.config.js'],
+                        extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
+                        babelHelpers: 'runtime',
+                        // babelrc: false,
+                        presets: [
+                            [presetEnv, {
+                                'targets': {
+                                    'browsers': ['last 3 versions', '> 2%', 'ie >= 9', 'Firefox >= 30', 'Chrome >= 30']
+                                },
+                                'modules': false,
+                                'loose': true,
+                                'shippedProposals': true
+                            }],
+                            // ["@babel/preset-typescript"]
+                        ],
+                        plugins: [
+                            // syntaxDynamicImportPlugins,
+                            [proposalDecoratorsPlugins, { "legacy": true }],
+                            [proposalClassPlugins, { "loose": true }],
+                            [runtimePlugins, { "useESModules": false }],
                         ],
                         exclude: 'node_modules/**',
                     }),
@@ -316,6 +396,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             return umdConfig;
         }
 
+        // iife和amd格式配置
         if (format === 'iife' || format === 'amd') {
             const unpkgPluginsMap = {
                 'js': [
