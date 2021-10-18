@@ -3,6 +3,7 @@
  */
 const moment = require('moment')
 const path = require('path')
+const isProd = require('../utils/index').isProd();
 
 module.exports = ({ pkg, cwd } = {}) => {
     return {
@@ -53,6 +54,11 @@ module.exports = ({ pkg, cwd } = {}) => {
         templateBase: 'examples/',
         stylusAlias: {
             '@': path.join(cwd, './node_modules/@')
+        },
+        replaceMaps: {
+            // 'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
+            'process.env.DEBUG': JSON.stringify(isProd ? 'false' : 'true'),
+            'process.argv': JSON.stringify(process.argv),
         }
     }
 }

@@ -47,6 +47,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     const { sourceFormat } = cliConfig;
 
     const stylusAlias = bbuilderConfig.stylusAlias;
+    const replaceMaps = bbuilderConfig.replaceMaps || {};
     const Evaluator = require('stylus').Evaluator;
 
     // console.log('asdfasdf', path.resolve(process.cwd(), `./${bbuilderConfig.output.directory}/types`));
@@ -76,9 +77,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 preventAssignment: true,
                 '__VERSION__': version,
                 '__ENV__': JSON.stringify('production'),
-                'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
-                'process.env.DEBUG': JSON.stringify(isProd ? 'false' : 'true'),
-                'process.argv': JSON.stringify(process.argv),
+                ...replaceMaps
             }),
         ],
         preConfig: [
@@ -488,6 +487,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
         if (config.stylusAlias) {
             delete config.stylusAlias
+        }
+
+        if (config.replaceMaps) {
+            delete config.replaceMaps
         }
 
         return [...acc, config]
