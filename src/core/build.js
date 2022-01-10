@@ -4,12 +4,22 @@ const shell = require('shelljs')
 const rollup = require('rollup')
 const terser = require('terser')
 const rimraf = require('rimraf');
+const path = require("path");
 
 const pkgLoader = require('../loader/pkg-loader')
 const configLoader = require('../loader/config-loader')
 const formatMapping = require('../core/format-mapping')
 const rollupConfigGenerator = require('../core/rollup-config-generator')
 const isProd = require('../utils/index').isProd();
+
+function ensureDirectoryExistence(filePath) {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
+}
 
 module.exports = async (cliConfig, custumConfig) => {
   const pkg = pkgLoader()
@@ -30,14 +40,21 @@ module.exports = async (cliConfig, custumConfig) => {
 
     if (!fs.existsSync(bbuilderConfig.output.directory)) fs.mkdirSync(bbuilderConfig.output.directory)
 
+    let firstMark = false;
     for (const config of rollupConfigs) {
       const spinner = ora(`📦 [${config.output.format}] ${bbuilderConfig.input} → ${config.output.file}.js \n`).start()
 
       try {
         const bundle = await rollup.rollup(config)
-        const { output: [{ code, map }] } = await bundle.generate(config.output)
-        // await bundle.write(config.output)
+        const { output: [{ code, map }, ...extendMapI]} = await bundle.generate(config.output)
+        // await bundle.write(config.output) // 默认写入方法
         fs.writeFileSync(`${config.output.file}.js`, code)
+        if (!firstMark && bbuilderConfig.styleExtract && extendMapI && extendMapI.length) {
+          const [{ fileName: styleDir, source: styleSource }] = extendMapI
+          firstMark = true
+          ensureDirectoryExistence(styleDir)
+          fs.writeFileSync(path.resolve(styleDir), styleSource)
+        }
 
         // minimize
         if (isProd) {

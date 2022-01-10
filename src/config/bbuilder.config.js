@@ -55,6 +55,7 @@ module.exports = ({ pkg, cwd } = {}) => {
         stylusAlias: {
             '@': path.join(cwd, './node_modules/@')
         },
+        styleExtract: false,
         replaceMaps: {
             // 'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
             'process.env.DEBUG': JSON.stringify(isProd ? 'false' : 'true'),

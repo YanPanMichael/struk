@@ -40,6 +40,11 @@ const globals = {
 
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 const isProd = require('../utils/index').isProd();
+const cssModulesConfig = isProd
+  ? {
+      generateScopedName: '[hash:base64:5]'
+    }
+  : true
 
 module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
     const version = process.env.VERSION || pkg.version;
@@ -95,10 +100,15 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
             }),
             // stylus(),
             postcss({
-                extensions: ['.css', '.styl', '.sass', '.scss'],
-                modules: true,
+              extensions: ['.css', '.styl', '.sass', '.scss'],
+              modules: cssModulesConfig,
+              plugins: [autoprefixer()],
+              sourceMap: false,
+              extract: !!bbuilderConfig?.styleExtract ? `${bbuilderConfig.output.directory}/style/style.css` : false,
+              minimize: true,
+              inject: true,
             }),
-            css(),
+            // css(),
         ],
         vue: {
             defaultLang: {
@@ -127,7 +137,7 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
                 extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
                 mainFields: ["jsnext:main", "preferBuiltins", "browser"]
             }),
-            commonjs(),
+            commonjs()
         ],
         babel: {
             exclude: ['node_modules/**', 'blive.config.js'],
@@ -491,6 +501,10 @@ module.exports = (bbuilderConfig, pkg, formatMapping, cliConfig) => {
 
         if (config.replaceMaps) {
             delete config.replaceMaps
+        }
+
+        if (config.styleExtract) {
+            delete config.styleExtract
         }
 
         return [...acc, config]
