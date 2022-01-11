@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://git.bilibili.co/blive-core/bbuilder/compare/v1.2.0...v1.3.0) (2022-01-11)
+
+
+### Features
+
+* 增加对css, styl, scss等css样式打包构建能力 ([1c148c3](https://git.bilibili.co/blive-core/bbuilder/commit/1c148c36cca7533908047c521538250bc001d5bc))
+
 ## [1.2.0](https://git.bilibili.co/blive-core/bbuilder/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
