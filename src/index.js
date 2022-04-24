@@ -19,11 +19,13 @@ module.exports = (custumConfig) => {
     '🚀 Command:',
     command || 'runnding default',
     '📌 Format:',
-    sourceFormat
+    sourceFormat,
   )
 
   if (!['js', 'ts', 'vue', 'react'].includes(sourceFormat)) {
-    return console.log('😑 Please input source format which includes js | ts | vue | react')
+    return console.log(
+      '😑 Please input source format which includes js | ts | vue | react \n'
+    )
   }
 
   const cliConfig = {

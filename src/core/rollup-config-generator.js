@@ -38,7 +38,14 @@ const globals = {
 }
 // const sourcemaps = require('rollup-plugin-sourcemaps');
 // const terser = require('rollup-plugin-terser').terser;
-
+const tempProperty = [
+  'skipAlert',
+  'formatConfig',
+  'templateBase',
+  'stylusAlias',
+  'replaceMaps',
+  'styleExtract',
+]
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 const isProd = require('../utils/index').isProd()
 const cssModulesConfig = isProd
@@ -56,7 +63,6 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
   const replaceMaps = strukConfig.replaceMaps || {}
   const Evaluator = require('stylus').Evaluator
 
-  // console.log('asdfasdf', path.resolve(process.cwd(), `./${strukConfig.output.directory}/types`));
   if (!!stylusAlias) {
     const visitImport = Evaluator.prototype.visitImport
     Evaluator.prototype.visitImport = function (imported) {
@@ -185,10 +191,10 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           port: 3003,
           verbose: true // 打印输出serve路径
         })
-        // livereload({
-        //   watch: strukConfig.output.directory,
-        //   port: 35729
-        // }
+      // livereload({
+      //   watch: strukConfig.output.directory,
+      //   port: 35729
+      // }
     ]
   }
 
@@ -515,7 +521,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           ...basePlugins.postConfig,
           typescript(basePlugins.tsConfig),
           babel(basePlugins.babel)
-          // !!isProd && terser({
+          // // !!isProd && terser({
           //   toplevel: true,
           //   output: {
           //     ascii_only: true,
@@ -564,15 +570,14 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         globals
       },
       external: [...new Set(externals)]
-    }[
-      ('formatConfig',
-      'templateBase',
-      'stylusAlias',
-      'replaceMaps',
-      'styleExtract')
-    ].forEach((property) => {
+    }
+
+    tempProperty.forEach((property) => {
       if (config.hasOwnProperty(property)) {
         delete config[property]
+      }
+      if (config.output.hasOwnProperty('directory')) {
+        delete config.output.directory
       }
     })
 
