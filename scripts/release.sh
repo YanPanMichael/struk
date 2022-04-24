@@ -18,4 +18,4 @@ git push --tags origin
 git push --all origin
 
 # publish
-npm publish --registry=http://registry.npm.bilibili.co/
+npm publish --registry=https://registry.npmjs.org/

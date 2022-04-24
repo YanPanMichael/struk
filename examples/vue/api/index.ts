@@ -1,6 +1,6 @@
-import bxios from '@bilibili-live/bxios'
-bxios.defaults.baseURL = 'https://api.live.bilibili.com'
+import axios from 'axios'
+axios.defaults.baseURL = 'https://api.test.com'
 
 export const getGuildInfo = () => {
-  return bxios.get('/xlive/mcn-interface/v1/homePage/CenterEntryIsShow')
+  return axios.get('/aa/vv/inferface/v1/homePage/CenterEntryIsShow')
 }

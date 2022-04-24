@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import '@bilibili-live/component.icon-font'
 
 /**
  * 直播 Footer
@@ -10,6 +9,4 @@ import '@bilibili-live/component.icon-font'
  * @extends {Vue}
  */
 @Component
-export default class LiveFooter extends Vue {
-
-}
+export default class LiveFooter extends Vue {}

@@ -1,31 +1,29 @@
 {
-  "name": "@bilibili-live/bbuilder",
-  "version": "1.3.1",
+  "name": "struk",
+  "version": "0.0.1",
   "description": "📦 基于rollup的JS、TS、Vue包构建工具 📦",
-  "author": "panyan <panyan@bilibili.com>",
-  "license": "ISC",
+  "author": "yanpanmichael",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://git.bilibili.co/blive-core/bbuilder"
+    "url": ""
   },
   "keywords": [
     "rollup",
-    "bbuilder",
+    "struk",
     "javascript bundler",
     "vue bundler",
     "typescript bundler",
     "package-bundler"
   ],
   "bin": {
-    "bbuilder": "bin/bbuilder.js"
+    "struk": "bin/struk.js"
   },
   "main": "src/index.js",
   "scripts": {
-    "release": "sh scripts/release.sh",
-    "addVernMirror": "standard-version -r minor --preMajor true",
-    "addVernMajor": "standard-version -r major --preMajor true",
-    "addVernPreRel": "standard-version -p Alpha --preMajor true --dry-run",
-    "build": "NODE_ENV=production node bin/bbuilder.js --source=ts"
+    "release": "qkrelease --skipBuild",
+    "build": "NODE_ENV=production node bin/struk.js --source=ts",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
@@ -45,12 +43,14 @@
     "@vue/cli-service": "^4.5.13",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "autoprefixer": "^9.8.6",
+    "fs-extra": "^10.1.0",
+    "inquirer": "^8.2.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "ora": "^5.4.0",
     "postcss": "^8.3.7",
     "pug": "^3.0.2",
-    "rimraf": "^3.0.2",
+    "rimraf": "^3.0.0",
     "rollup": "^2.52.8",
     "rollup-plugin-css-porter": "^1.0.2",
     "rollup-plugin-filesize": "^9.1.1",
@@ -76,6 +76,8 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.172",
+    "prettier": "^2.6.1",
+    "qk-release": "^1.1.0",
     "standard-version": "^9.1.0"
   },
   "peerDependencies": {

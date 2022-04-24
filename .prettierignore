@@ -1,0 +1,10 @@
+docs/.vitepress/dist/
+dist/
+temp/
+CHANGELOG.md
+LICENSE.md
+.prettierignore
+pnpm-lock.yaml
+pnpm-workspace.yaml
+tsconfig-json-load-error/has-error/tsconfig.json
+html/invalid.html

@@ -4,7 +4,7 @@ footer.link-footer
     .footer-right.f-right
       ul.footer-img-linker.list-none
         li
-          a(target="_blank", href="//link.bilibili.com/p/eden/download")
+          a(target="_blank", href="")
             .footer-img-item.footer-img-download
               i.icon-font.icon-download
             .footer-img-text 直播姬APP 下载
@@ -22,7 +22,6 @@ footer.link-footer
 </style>
 
 <script>
-import "@bilibili-live/component.icon-font";
 // import { getGuildInfo } from "./api";
 
 export default {
@@ -31,29 +30,29 @@ export default {
     // 这里就不需要再次调用接口获取，直接在promise.then里获取res即可
     guildPromised: {
       type: Promise,
-      default: null,
-    },
+      default: null
+    }
   },
   data: () => ({
     // 是否显示公会中心
     guildShow: false,
     // 公会中心url
-    guildUrl: "",
+    guildUrl: ''
   }),
   mounted() {
-    let promised;
+    let promised
 
     // 外部没有传入promise就在组件里调用接口
     if (this.guildPromised) {
-      promised = this.guildPromised;
+      promised = this.guildPromised
     } else {
       // promised = getGuildInfo();
     }
     promised.then((res) => {
-      const { footer, url } = res.data.data;
-      this.guildShow = footer;
-      this.guildUrl = url;
-    });
-  },
-};
+      const { footer, url } = res.data.data
+      this.guildShow = footer
+      this.guildUrl = url
+    })
+  }
+}
 </script>

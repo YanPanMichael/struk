@@ -1,3 +1,3 @@
 export default class A {
-    name = "Tom"
+  name = 'Tom'
 }

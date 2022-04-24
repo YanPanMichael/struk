@@ -1,18 +1,20 @@
-# @bilibili-live/bbuilder
+<!-- <img src="icon.png" align="right" /> -->
+# Struk [![Struk](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/yanppanmichael/struk#readme)
+> 📦 基于 rollup 的 JS、TS、Vue、React 包基础核心构建工具 📦
 
-> 📦 基于rollup的JS、TS、Vue包基础核心构建工具 📦
+## Examples
 
 ## ✨ 特性
 
-- 基于rollup的Blive的核心基础构建工具
-- 支持 javascript、typescript、vue
+- 基于 rollup 的基础核心构建工具
+- 支持 javascript、typescript、vue、react
 
 ## 🚀 快速开始
 
 ### 安装
 
 ```bash
-npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
+npm i -D struk # 或 yarn add -D struk
 ```
 
 ### 使用
@@ -21,11 +23,11 @@ npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
 
 ```js
   "scripts": {
-    "build": "NODE_ENV=production bbuilder build --source=js"
+    "build": "NODE_ENV=production struk build --source=js"
   },
 ```
 
-需要通过参数`source`指定构建打包源文件格式，其取值为`'js', 'ts', 'vue'`三种格式之一。
+需要通过参数`source`指定构建打包源文件格式，其取值为`'js', 'ts', 'vue', 'react'`三种格式之一。
 
 **第二步**：命令行进入项目目录，运行：
 
@@ -33,15 +35,14 @@ npm i -D @bilibili-live/bbuilder # 或 yarn add -D @bilibili-live/bbuilder
 npm run build # 或 yarn build
 ```
 
-bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es', 'cjs', 'iife', 'amd'` 五种格式的构建包（包含未压缩和已压缩版本）。
-
-<img src="https://git.bilibili.co/blive-core/bbuilder/-/blob/master/docs/assets/cli.png?raw=true">
+struk 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es', 'cjs', 'iife', 'amd'` 五种格式的构建包（包含未压缩和已压缩版本）。
 
 ### 自定义配置
 
-可在项目根目录新建 `blive.config.js` 自定义 bbuilder 构建配置（或在 `package.json` 中使用 `bbuilderConfig` 对象配置）。
+可在项目根目录新建 `struk.config.js` 自定义 struk 构建配置（或在 `package.json` 中使用 `strukConfig` 对象配置）。
 
-如需指定打包需要隔离的依赖包，则可配置formatConfig属性对象
+如需指定打包需要隔离的依赖包，则可配置 formatConfig 属性对象
+
 ```js
   "formatConfig": {
     [format]: {
@@ -49,7 +50,9 @@ bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'e
     }
   },
 ```
-如需整体隔离dependences全体依赖包，可指定isolateDep: true
+
+如需整体隔离 dependences 全体依赖包，可指定 isolateDep: true
+
 ```js
   "formatConfig": {
     [format]: {
@@ -57,17 +60,20 @@ bbuilder 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'e
     }
   },
 ```
-debug状态会自动开启rollup-serve，可配置templateBase属性指定模版index.html所在路径
+
+debug 状态会自动开启 rollup-serve，可配置 templateBase 属性指定模版 index.html 所在路径
+
 ```js
   "formatConfig": {
     templateBase: 'examples/',
   },
 ```
 
-[bbuilder 默认配置/配置示例](https://git.bilibili.co/blive-core/bbuilder/blob/master/src/config/bbuilder.config.js)
+[struk 默认配置/配置示例]()
+
 ```js
 /**
- * bbuilder 默认配置
+ * struk 默认配置
  */
 module.exports = ({ pkg } = {}) => {
   return {
@@ -87,32 +93,34 @@ module.exports = ({ pkg } = {}) => {
 * ${pkg.name} with v${pkg.version}
 * Author: ${pkg.author}
 * Built on ${new Date().toLocaleDateString()}
-* Released under the ${pkg.license} License Copyright (c) 2021-${new Date().getFullYear()}
-*/`,
+* Released under the ${
+        pkg.license
+      } License Copyright (c) 2021-${new Date().getFullYear()}
+*/`
     },
     formatConfig: {
       umd: {
         // 打包屏蔽的外部模块
         external: ['lodash', 'moment'],
         // 外部pkg.dependences依赖不屏蔽
-        isolateDep: false,
+        isolateDep: false
       },
       es: {
         external: ['lodash', 'moment'],
         // 自动屏蔽全部pkg.dependences依赖
-        isolateDep: true,
+        isolateDep: true
       },
       cjs: {
         external: [],
-        isolateDep: false,
+        isolateDep: false
       },
       iife: {
         external: [],
-        isolateDep: false,
+        isolateDep: false
       },
       amd: {
         external: [],
-        isolateDep: false,
+        isolateDep: false
       }
     },
     templateBase: 'examples/'
@@ -122,10 +130,10 @@ module.exports = ({ pkg } = {}) => {
 
 <br>
 <br>
-😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="https://git.bilibili.co/blive-core/bbuilder">Star</a></b> 感谢支持~
+😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="">Star</a></b> 感谢支持~
 
 ## License
 
 [ISC](http://opensource.org/licenses/ISC)
 
-Copyright (c) 2021-present, bilibili
+Copyright (c) 2022-present, YanPan
