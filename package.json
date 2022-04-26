@@ -1,6 +1,6 @@
 {
   "name": "struk",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "📦 基于rollup的JS、TS、Vue、React包构建工具 | One common construction and package tool for JS/TS/Vue/React components based on Rollup 📦",
   "author": "yanpanmichael",
   "license": "MIT",
@@ -17,9 +17,9 @@
     "rollup",
     "struk",
     "javascript bundler",
-    "vue",
-    "react",
     "typescript bundler",
+    "vue bundler",
+    "react bundler",
     "package-bundler"
   ],
   "bin": {
