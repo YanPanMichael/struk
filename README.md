@@ -3,8 +3,7 @@
 # Struk [![Struk](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/yanppanmichael/struk#readme)
 
 > 📦 基于 rollup 的 JS、TS、Vue、React 包基础核心构建工具 📦
-
-## Examples
+> 📦 One common construction and package tool for JS/TS/Vue/React components based on Rollup 📦
 
 ## ✨ 特性
 
@@ -29,7 +28,7 @@ npm i -D struk # 或 yarn add -D struk
   },
 ```
 
-需要通过参数`source`指定构建打包源文件格式，其取值为`'js', 'ts', 'vue', 'react'`三种格式之一。
+需要通过参数`source`指定构建打包源文件格式，其取值为`'js', 'ts', 'vue', 'react'`四种格式之一。
 
 **第二步**：命令行进入项目目录，运行：
 
@@ -125,7 +124,9 @@ module.exports = ({ pkg } = {}) => {
         isolateDep: false
       }
     },
-    templateBase: 'examples/'
+    skipAlert: true, // 重复路径是否提示覆盖并继续构建，默认不提示
+    templateBase: 'examples/',
+    replaceMaps: {}
   }
 }
 ```
@@ -136,6 +137,6 @@ module.exports = ({ pkg } = {}) => {
 
 ## License
 
-[ISC](http://opensource.org/licenses/ISC)
+[MIT](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2022-present, YanPan

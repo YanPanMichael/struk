@@ -52,7 +52,7 @@ module.exports = async (cliConfig, custumConfig) => {
     }
     await checkOutputDir()
   }
-  
+
   const rollupConfigs = rollupConfigGenerator(
     strukConfig,
     pkg,

@@ -19,7 +19,7 @@ module.exports = (custumConfig) => {
     '🚀 Command:',
     command || 'runnding default',
     '📌 Format:',
-    sourceFormat,
+    sourceFormat
   )
 
   if (!['js', 'ts', 'vue', 'react'].includes(sourceFormat)) {

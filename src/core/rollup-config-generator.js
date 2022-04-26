@@ -33,8 +33,9 @@ const filesize = require('rollup-plugin-filesize')
 const globals = {
   // Provide global variable names to replace your external imports
   jquery: '$',
+  vue: 'Vue',
   react: 'React',
-  vue: 'Vue'
+  'react-dom': 'ReactDOM'
 }
 // const sourcemaps = require('rollup-plugin-sourcemaps');
 // const terser = require('rollup-plugin-terser').terser;
@@ -44,7 +45,7 @@ const tempProperty = [
   'templateBase',
   'stylusAlias',
   'replaceMaps',
-  'styleExtract',
+  'styleExtract'
 ]
 // const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
 const isProd = require('../utils/index').isProd()
@@ -161,6 +162,23 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         // runtimePlugins,
       ]
     },
+    babelPreset: [
+      presetEnv,
+      {
+        targets: {
+          browsers: [
+            'last 3 versions',
+            '> 2%',
+            'ie >= 9',
+            'Firefox >= 30',
+            'Chrome >= 30'
+          ]
+        },
+        modules: false,
+        loose: true,
+        shippedProposals: true
+      }
+    ],
     tsConfig: {
       check: false,
       // tsconfig: path.resolve(__dirname, '../../tsconfig.json'),
@@ -210,23 +228,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
             babelHelpers: 'runtime',
             // babelrc: false,
             presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
+              basePlugins.babelPreset
               // ["@babel/preset-typescript"]
             ],
             plugins: [
@@ -253,25 +255,18 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           typescript(basePlugins.tsConfig),
           babel({
             ...basePlugins.babel,
-            presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
-            ]
+            presets: [basePlugins.babelPreset]
+          })
+        ],
+        react: [
+          ...basePlugins.preConfig,
+          // Only use typescript for declarations - babel will
+          // do actual js transformations
+          typescript(basePlugins.tsConfig),
+          ...basePlugins.postConfig,
+          babel({
+            ...basePlugins.babel,
+            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
           })
         ]
       }
@@ -300,23 +295,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
             babelHelpers: 'runtime',
             // babelrc: false,
             presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
+              basePlugins.babelPreset
               // ["@babel/preset-typescript"]
             ],
             plugins: [
@@ -347,25 +326,18 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           typescript(basePlugins.tsConfig),
           babel({
             ...basePlugins.babel,
-            presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
-            ]
+            presets: [basePlugins.babelPreset]
+          })
+        ],
+        react: [
+          ...basePlugins.preConfig,
+          // Only use typescript for declarations - babel will
+          // do actual js transformations
+          typescript(basePlugins.tsConfig),
+          ...basePlugins.postConfig,
+          babel({
+            ...basePlugins.babel,
+            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
           })
         ]
       }
@@ -394,23 +366,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
             babelHelpers: 'runtime',
             // babelrc: false,
             presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
+              basePlugins.babelPreset
               // ["@babel/preset-typescript"]
             ],
             plugins: [
@@ -441,25 +397,16 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           typescript(basePlugins.tsConfig),
           babel({
             ...basePlugins.babel,
-            presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
-            ]
+            presets: [basePlugins.babelPreset]
+          })
+        ],
+        react: [
+          ...basePlugins.preConfig,
+          typescript(basePlugins.tsConfig),
+          ...basePlugins.postConfig,
+          babel({
+            ...basePlugins.babel,
+            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
           })
         ]
       }
@@ -483,25 +430,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           ...basePlugins.preConfig,
           babel({
             ...basePlugins.babel,
-            presets: [
-              [
-                presetEnv,
-                {
-                  targets: {
-                    browsers: [
-                      'last 3 versions',
-                      '> 2%',
-                      'ie >= 9',
-                      'Firefox >= 30',
-                      'Chrome >= 30'
-                    ]
-                  },
-                  modules: false,
-                  loose: true,
-                  shippedProposals: true
-                }
-              ]
-            ],
+            presets: [basePlugins.babelPreset],
             plugins: [
               // syntaxDynamicImportPlugins,
               [proposalDecoratorsPlugins, { legacy: true }],
@@ -532,6 +461,15 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           //     pure_funcs: ['Math.floor']
           //   },
           // })
+        ],
+        react: [
+          ...basePlugins.preConfig,
+          typescript(basePlugins.tsConfig),
+          ...basePlugins.postConfig,
+          babel({
+            ...basePlugins.babel,
+            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
+          })
         ]
       }
       const unpkgPlugins = unpkgPluginsMap[sourceFormat] || []

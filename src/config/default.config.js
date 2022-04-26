@@ -9,7 +9,7 @@ module.exports = ({ pkg, cwd } = {}) => {
   return {
     // 输入
     // input: 'src/index.js',
-    input: 'examples/index.ts',
+    input: 'examples/react/index.tsx',
 
     // 输出
     output: {
