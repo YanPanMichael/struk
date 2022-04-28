@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [chan-log](https://github.com/conventional-changelog/chan-log) for commit guidelines.
 
+### [1.0.2](https://github.com/YanPanMichael/struk/compare/v1.0.1...v1.0.2) (2022-04-28)
+
+
+### Features
+
+* add eslint ([6e55e9d](https://github.com/YanPanMichael/struk/commit/6e55e9db6c02690edc8b7f7881bac504368a3a3b))
+
 ### 1.0.1 (2022-04-26)
 
 
