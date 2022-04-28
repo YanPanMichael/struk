@@ -29,7 +29,9 @@
   "scripts": {
     "release": "qkrelease --skipBuild",
     "build": "NODE_ENV=production node bin/struk.js --source=react",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint src",
+    "fix": "eslint src/**/*.* --fix"
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
@@ -83,11 +85,16 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.172",
+    "eslint": "~8.11",
+    "eslint-config-prettier": "~8.5",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.0.0",
     "prettier": "^2.6.1",
     "qk-release": "^1.1.0",
     "react": "^16.0.0",
-    "vue": "^2.6.14",
-    "standard-version": "^9.1.0"
+    "vue": "^2.6.14"
   },
   "peerDependencies": {
     "react": "^16.0.0",

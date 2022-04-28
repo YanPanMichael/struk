@@ -7,11 +7,11 @@ const peerDepsExternal = require('rollup-plugin-peer-deps-external')
 const resolve = require('@rollup/plugin-node-resolve').nodeResolve
 const commonjs = require('@rollup/plugin-commonjs')
 const json = require('@rollup/plugin-json')
-const url = require('rollup-plugin-url')
+// const url = require('rollup-plugin-url')
 // const livereload = require('rollup-plugin-livereload');
 const alias = require('@rollup/plugin-alias')
 // const stylus = require('rollup-plugin-stylus-compiler');
-const css = require('rollup-plugin-css-porter')
+// const css = require('rollup-plugin-css-porter')
 const vue = require('rollup-plugin-vue')
 // const stylus = require('rollup-plugin-stylus');
 // const vuePugPlugin = require('vue-pug-plugin')
@@ -51,8 +51,8 @@ const tempProperty = [
 const isProd = require('../utils/index').isProd()
 const cssModulesConfig = isProd
   ? {
-      generateScopedName: '[hash:base64:5]'
-    }
+    generateScopedName: '[hash:base64:5]'
+  }
   : true
 
 module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
@@ -64,7 +64,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
   const replaceMaps = strukConfig.replaceMaps || {}
   const Evaluator = require('stylus').Evaluator
 
-  if (!!stylusAlias) {
+  if (stylusAlias) {
     const visitImport = Evaluator.prototype.visitImport
     Evaluator.prototype.visitImport = function (imported) {
       const path = imported.path.first
@@ -72,8 +72,9 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         const alias = Object.keys(stylusAlias).find((entry) =>
           path.string.startsWith(`~${entry}`)
         )
-        if (alias)
+        if (alias) {
           path.string = path.string.substr(1).replace(alias, stylusAlias[alias])
+        }
       }
       return visitImport.call(this, imported)
     }
@@ -114,7 +115,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         modules: cssModulesConfig,
         plugins: [autoprefixer()],
         sourceMap: false,
-        extract: !!strukConfig?.styleExtract
+        extract: strukConfig?.styleExtract
           ? `${strukConfig.output.directory}/style/style.css`
           : false,
         minimize: true,
@@ -216,7 +217,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     ]
   }
 
-  function mapFormatToConfig(format, sourceFormat) {
+  function mapFormatToConfig (format, sourceFormat) {
     // esm格式配置
     if (format === 'es') {
       const esPluginMap = {
@@ -236,8 +237,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
               [proposalDecoratorsPlugins, { legacy: true }],
               [proposalClassPlugins, { loose: true }],
               [runtimePlugins, { useESModules: true }]
-            ],
-            exclude: 'node_modules/**'
+            ]
           }),
           ...basePlugins.postConfig
         ],
@@ -303,8 +303,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
               [proposalDecoratorsPlugins, { legacy: true }],
               [proposalClassPlugins, { loose: true }],
               [runtimePlugins, { useESModules: false }]
-            ],
-            exclude: 'node_modules/**'
+            ]
           }),
           ...basePlugins.postConfig
         ],
@@ -374,8 +373,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
               [proposalDecoratorsPlugins, { legacy: true }],
               [proposalClassPlugins, { loose: true }],
               [runtimePlugins, { useESModules: false }]
-            ],
-            exclude: 'node_modules/**'
+            ]
           }),
           ...basePlugins.postConfig
         ],
@@ -485,14 +483,14 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     }
   }
 
-  const pkgDeps = !!pkg.dependencies
+  const pkgDeps = pkg.dependencies
     ? Object.keys(pkg.dependencies).map((d) => toString(d))
     : []
 
   const rollupConfigRes = strukConfig.output.format.reduce((acc, format) => {
     const { external = [], isolateDep } =
       strukConfig.formatConfig?.[format] ?? {}
-    const externals = !!isolateDep ? pkgDeps.concat(external) : external
+    const externals = isolateDep ? pkgDeps.concat(external) : external
     const configRes = mapFormatToConfig(format, sourceFormat)
     const config = {
       ...configRes,
@@ -503,7 +501,7 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         }`,
         format,
         sourcemap: isProd,
-        compact: format === 'es' ? false : true,
+        compact: format !== 'es',
         exports: format === 'es' ? 'named' : 'auto',
         globals
       },
@@ -511,10 +509,10 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     }
 
     tempProperty.forEach((property) => {
-      if (config.hasOwnProperty(property)) {
+      if (Object.prototype.hasOwnProperty.call(config, property)) {
         delete config[property]
       }
-      if (config.output.hasOwnProperty('directory')) {
+      if (Object.prototype.hasOwnProperty.call(config.output, 'directory')) {
         delete config.output.directory
       }
     })

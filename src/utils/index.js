@@ -2,33 +2,34 @@ const fs = require('fs')
 const path = require('path')
 const ts = require('typescript')
 
-function writeToFile(dest, code) {
+function writeToFile (dest, code) {
   return new Promise((resolve, reject) => {
     try {
       fs.writeFileSync(dest, code)
       resolve()
     } catch (err) {
       if (err) {
-        logError(blue(dest + ' ' + (extra || '')))
+        logError(blue(`${dest}`))
         reject(err)
       }
     }
   })
 }
 
-function logError(e) {
+function logError (e) {
   console.log(e)
 }
 
-function blue(str) {
+function blue (str) {
   return '\x1b[1m\x1b[34m' + str + '\x1b[39m\x1b[22m'
 }
 
-function isProd() {
+function isProd () {
   return process.env.NODE_ENV === 'production'
 }
 
-function getTsConfigOption() {
+/* eslint-disable */
+function getTsConfigOption () {
   const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json')
   // borrowed from https://github.com/facebook/create-react-app/pull/7248
   // const tsconfigJSON = ts.readConfigFile(tsconfigPath, ts.sys.readFile).config;
@@ -45,6 +46,7 @@ function getTsConfigOption() {
   )
   return tsCompilerOptions
 }
+/* eslint-enable */
 
 module.exports = {
   isProd,

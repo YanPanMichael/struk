@@ -27,5 +27,11 @@
     ],
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "exclude": ["node_modules", "dist", "examples", "struk.config.js"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "examples",
+    "jest.config.js",
+    "struk.config.js"
+  ]
 }

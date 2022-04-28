@@ -8,14 +8,14 @@ const isProd = require('../utils/index').isProd()
 module.exports = ({ pkg, cwd } = {}) => {
   return {
     // 输入
-    // input: 'src/index.js',
-    input: 'examples/react/index.tsx',
+    input: 'src/index.js',
+    // input: 'examples/react/index.tsx',
 
     // 输出
     output: {
       // 目录
-      // directory: 'dist',
-      directory: 'examples/dist',
+      directory: 'dist',
+      // directory: 'examples/dist',
       // 包名
       name: /\//.test(pkg.name) ? pkg.name.match(/\/(.+)/)[1] : pkg.name,
       // 格式
@@ -26,8 +26,8 @@ module.exports = ({ pkg, cwd } = {}) => {
 * Author: ${pkg.author}
 * Built on ${moment().format('YYYY-MM-DD, HH:mm:ss')}
 * Released under the ${
-        pkg.license
-      } License Copyright (c) ${new Date().getFullYear()}
+  pkg.license
+} License Copyright (c) ${new Date().getFullYear()}
 */`
     },
     formatConfig: {

@@ -15,8 +15,8 @@ const formatMapping = require('../core/format-mapping')
 const rollupConfigGenerator = require('../core/rollup-config-generator')
 const isProd = require('../utils/index').isProd()
 
-function ensureDirectoryExistence(filePath) {
-  var dirname = path.dirname(filePath)
+function ensureDirectoryExistence (filePath) {
+  const dirname = path.dirname(filePath)
   if (fs.existsSync(dirname)) {
     return true
   }
@@ -44,7 +44,7 @@ module.exports = async (cliConfig, custumConfig) => {
         if (answers?.remove) {
           rimraf.sync(strukConfig.output.directory)
         } else {
-          console.error(`\n` + 'Remove directory fail: ' + answers?.remove)
+          console.error('\n' + 'Remove directory fail: ' + answers?.remove)
           process.exit(0)
           // shell.exit(1)
         }
@@ -66,8 +66,9 @@ module.exports = async (cliConfig, custumConfig) => {
     console.log('\nrollupConfigs: ', rollupConfigs)
   }
 
-  if (!fs.existsSync(strukConfig.output.directory))
+  if (!fs.existsSync(strukConfig.output.directory)) {
     fs.mkdirSync(strukConfig.output.directory)
+  }
 
   let firstMark = false
   for (const config of rollupConfigs) {
@@ -119,7 +120,7 @@ module.exports = async (cliConfig, custumConfig) => {
       }
     } catch (e) {
       spinner.fail('Oops, Packing error!!')
-      console.error(`\n` + e.stack)
+      console.error('\n' + e.stack)
       shell.exit(1)
     }
     spinner.succeed(`Format: [${config.output.format}] finished!`)

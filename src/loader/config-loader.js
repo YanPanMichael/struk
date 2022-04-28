@@ -12,8 +12,9 @@ module.exports = (cwd = process.cwd(), pkg, cliConfig, custumConfig) => {
 
   if (fs.existsSync(configPath)) {
     let config = require(configPath)
-    if (typeof config === 'function')
+    if (typeof config === 'function') {
       config = config({ pkg, cwd, defaultConfig, custumConfig })
+    }
     return mergeWith(defaultConfig, config, function (objValue, srcValue) {
       if (isArray(objValue)) {
         return (objValue = srcValue)
@@ -31,8 +32,9 @@ module.exports = (cwd = process.cwd(), pkg, cliConfig, custumConfig) => {
       }
     )
   } else {
-    if (cliConfig.debug)
+    if (cliConfig.debug) {
       console.warn('💡未找到 struk 配置，将使用默认配置构建...')
+    }
     return defaultConfig
   }
 }
