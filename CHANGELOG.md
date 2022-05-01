@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [chan-log](https://github.com/conventional-changelog/chan-log) for commit guidelines.
 
+### [1.0.3](https://github.com/YanPanMichael/struk/compare/v1.0.2...v1.0.3) (2022-05-01)
+
+
+### Features
+
+* fix readme ([f64292f](https://github.com/YanPanMichael/struk/commit/f64292f693775a23f22afd709d171ccdd6056dcd))
+
 ### [1.0.2](https://github.com/YanPanMichael/struk/compare/v1.0.1...v1.0.2) (2022-04-28)
 
 
