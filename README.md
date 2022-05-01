@@ -148,7 +148,7 @@ module.exports = ({ pkg } = {}) => {
 Copyright (c) 2022-present, YanPan
 
 [ts-badge]: https://img.shields.io/badge/TypeScript-4.0-blue.svg
-[nodejs-badge]: https://img.shields.io/badge/Node.js->=8.0-blue.svg
+[nodejs-badge]: https://img.shields.io/badge/Node.js->=12.0-blue.svg
 [nodejs]: https://nodejs.org/dist/latest-v8.x/docs/api/
 [gha-badge]: https://github.com/jsynowiec/node-typescript-boilerplate/actions/workflows/nodejs.yml/badge.svg
 [gha-ci]: https://github.com/jsynowiec/node-typescript-boilerplate/actions/workflows/nodejs.yml
@@ -157,7 +157,7 @@ Copyright (c) 2022-present, YanPan
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license]: https://github.com/jsynowiec/node-typescript-boilerplate/blob/main/LICENSE
 [sponsor-badge]: https://img.shields.io/badge/♥-Sponsor-fc0fb5.svg
-[sponsor]: https://github.com/sponsors/jsynowiec
+[sponsor]: https://github.com/YanPanMichael/struk
 [jest]: https://facebook.github.io/jest/
 [eslint]: https://github.com/eslint/eslint
 [wiki-js-tests]: https://github.com/jsynowiec/node-typescript-boilerplate/wiki/Unit-tests-in-plain-JavaScript
