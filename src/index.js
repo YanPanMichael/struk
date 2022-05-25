@@ -1,4 +1,13 @@
+const pkgActLoader = require('./loader/dir-loader')
+const { bannerPrint } = require('./utils/index')
+
 module.exports = (custumConfig) => {
+  const runtime = new Date().toLocaleString('en-us', {
+    timeZoneName: 'short'
+  })
+  const version = pkgActLoader().version || '--'
+  bannerPrint(version, runtime)
+
   const yargs = require('yargs')
     .alias({
       h: 'help',

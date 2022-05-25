@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const ts = require('typescript')
+const chalk = require('chalk')
 
 function writeToFile (dest, code) {
   return new Promise((resolve, reject) => {
@@ -46,9 +47,41 @@ function getTsConfigOption () {
   )
   return tsCompilerOptions
 }
+
+function bannerPrint(version, runtime) {
+    let runtimeStrLine = ''
+    let runtimeStr = ''
+    if (runtime && runtime !== '') {
+      runtimeStr = runtime
+      runtimeStr = `Runtime<${runtimeStr}>`
+      runtimeStrLine = '\n│'
+      runtimeStrLine +=
+        chalk.yellow.bold(
+          runtimeStr.padStart(25 + Math.floor(runtimeStr.length / 2)).padEnd(50)
+        ) + '│'
+    }
+    console.log(`
+    ___       ___       ___       ___       ___   
+   /\\  \\     /\\  \\     /\\  \\     /\\__\\     /\\__\\  
+  /::\\  \\    \\:\\  \\   /::\\  \\   /:/ _/_   /:/ _/_ 
+ /\\:\\:\\__\\   /::\\__\\ /::\\:\\__\\ /:/_/\\__\\ /::-"\\__\\
+ \\:\\:\\/__/  /:/\\/__/ \\;:::/  / \\:\\/:/  / \\;:;-",-"
+  \\::/  /   \\/__/     |:\\/__/   \\::/  /   |:|  |  
+   \\/__/               \\|__|     \\/__/     \\|__|  
+
+           \\__\\_/  ${chalk.italic(
+          ('@Struk@' + version).padStart(9)
+        )}  \\_/__/
+
+╭──────────────────────────────────────────────────╮
+│          JS/TS/VUE/REACT Module Builder          │${runtimeStrLine}
+╰──────────────────────────────────────────────────╯
+`)
+}
 /* eslint-enable */
 
 module.exports = {
   isProd,
-  writeToFile
+  writeToFile,
+  bannerPrint
 }
