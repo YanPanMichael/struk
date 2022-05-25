@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [chan-log](https://github.com/conventional-changelog/chan-log) for commit guidelines.
 
+## [1.1.0](https://github.com/YanPanMichael/struk/compare/v1.0.4...v1.1.0) (2022-05-25)
+
+
+### Features
+
+* add banner ([477e931](https://github.com/YanPanMichael/struk/commit/477e931c58b6c9fcfe37ca30ccd2e8f26859c79f))
+
 ### [1.0.4](https://github.com/YanPanMichael/struk/compare/v1.0.3...v1.0.4) (2022-05-01)
 
 
