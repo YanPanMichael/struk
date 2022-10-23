@@ -48,7 +48,7 @@ function getTsConfigOption () {
   return tsCompilerOptions
 }
 
-function bannerPrint(version, runtime) {
+function bannerPrint(version, runtime, __cusBannerString__) {
     let runtimeStrLine = ''
     let runtimeStr = ''
     if (runtime && runtime !== '') {
@@ -60,7 +60,16 @@ function bannerPrint(version, runtime) {
           runtimeStr.padStart(25 + Math.floor(runtimeStr.length / 2)).padEnd(50)
         ) + '│'
     }
-    console.log(`
+    if (!!__cusBannerString__) {
+      const figlet = require('figlet');
+      figlet.textSync(`${__cusBannerString__}`, {
+        font: 'Isometric3',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        whitespaceBreak: true
+      })
+    }
+    let banner = `
     ___       ___       ___       ___       ___   
    /\\  \\     /\\  \\     /\\  \\     /\\__\\     /\\__\\  
   /::\\  \\    \\:\\  \\   /::\\  \\   /:/ _/_   /:/ _/_ 
@@ -68,9 +77,21 @@ function bannerPrint(version, runtime) {
  \\:\\:\\/__/  /:/\\/__/ \\;:::/  / \\:\\/:/  / \\;:;-",-"
   \\::/  /   \\/__/     |:\\/__/   \\::/  /   |:|  |  
    \\/__/               \\|__|     \\/__/     \\|__|  
+`;
+    if (!!__cusBannerString__) {
+      const figlet = require('figlet');
+      banner = figlet.textSync(`${__cusBannerString__}`, {
+        font: 'Isometric3',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        whitespaceBreak: true
+      })
+    }
+    console.log(`
+${banner}
 
            \\__\\_/  ${chalk.italic(
-          ('@Struk@' + version).padStart(9)
+          (`@${__cusBannerString__||'Struk'}@` + version).padStart(9)
         )}  \\_/__/
 
 ╭──────────────────────────────────────────────────╮

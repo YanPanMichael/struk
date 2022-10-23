@@ -125,6 +125,6 @@ module.exports = async (cliConfig, custumConfig) => {
     }
     spinner.succeed(`Format: [${config.output.format}] finished!`)
   }
-  console.info(`\n ${chalk.gray('Construction')} ${chalk.green('Complete')} 👏`)
+  console.info(`\n ${chalk.gray('Construction')} ${chalk.green('Complete')} 👏👏👏`)
   shell.exit(0)
 }

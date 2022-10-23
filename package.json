@@ -53,6 +53,7 @@
     "@zerollup/ts-transform-paths": "^1.7.18",
     "autoprefixer": "^9.8.6",
     "chalk": "^4.1.2",
+    "figlet": "^1.5.2",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.2",
     "lodash": "^4.17.20",

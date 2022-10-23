@@ -5,8 +5,8 @@ module.exports = (custumConfig) => {
   const runtime = new Date().toLocaleString('en-us', {
     timeZoneName: 'short'
   })
-  const version = pkgActLoader().version || '--'
-  bannerPrint(version, runtime)
+  const { version = '--', __cusBannerString__ } = pkgActLoader()
+  bannerPrint(version, runtime, __cusBannerString__)
 
   const yargs = require('yargs')
     .alias({
