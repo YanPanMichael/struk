@@ -15,6 +15,7 @@
 
 - 基于 rollup 的基础核心构建工具
 - 支持 javascript、typescript、vue、react
+- 支持自定义banner，可通过指定package中__cusBannerString__字段值修改本工具品牌名称
 
 ## 🚀 快速开始
 
@@ -47,6 +48,8 @@ struk 默认以 `src/index.js` 为入口，在 `dist` 目录输出 `'umd', 'es',
 ### 自定义配置
 
 可在项目根目录新建 `struk.config.js` 自定义 struk 构建配置（或在 `package.json` 中使用 `strukConfig` 对象配置）。
+
+支持自定义banner，可通过指定package.json文件中__cusBannerString__字段值修改本工具品牌名称。
 
 如需指定打包需要隔离的依赖包，则可配置 formatConfig 属性对象
 
@@ -139,7 +142,7 @@ module.exports = ({ pkg } = {}) => {
 
 <br>
 <br>
-😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="">Star</a></b> 感谢支持~
+😉😘 如果感觉它对你有帮助，请点一下 <b>⭐️<a href="https://github.com/YanPanMichael/struk.git">Star</a></b> 感谢支持~
 
 ## License
 
