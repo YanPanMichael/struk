@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
-module.exports = (dir = __dirname) => {
-  const pkgPath = path.resolve(`${dir}`, '../../package.json')
+module.exports = (dir = __dirname, pkgUrl = '../../package.json') => {
+  const pkgPath = path.resolve(`${dir}`, pkgUrl)
   if (fs.existsSync(pkgPath)) {
     return require(pkgPath)
   } else {
