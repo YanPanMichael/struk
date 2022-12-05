@@ -54,7 +54,8 @@ module.exports = ({ pkg, cwd } = {}) => {
       }
     },
     skipAlert: true,
-    templateBase: 'examples/',
+    templateBase: 'examples/', // rollup-plugin-serve build base
+    // devServeInput: 'examples/index.js', // rollup-plugin-serve build input file
     stylusAlias: {
       '@': path.join(cwd, './node_modules/@')
     },

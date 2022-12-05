@@ -73,7 +73,7 @@ module.exports = async (cliConfig, custumConfig) => {
   let firstMark = false
   for (const config of rollupConfigs) {
     const spinner = ora(
-      `📦 [${config.output.format}] ${strukConfig.input} → ${config.output.file}.js \n`
+      `📦 [${config.output.format}] ${config.input} → ${config.output.file}.js \n`
     ).start()
 
     try {

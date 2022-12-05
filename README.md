@@ -87,9 +87,9 @@ To isolate all dependent packages of dependences as a whole, specify isolateDep:
   },
 ```
 
-debug 状态会自动开启 rollup-serve，可配置 templateBase 属性指定模版 index.html 所在路径
+debug 并且非production环境状态会自动开启 rollup-serve，可配置 templateBase 属性指定模版 index.html 所在路径
 
-The debug state automatically turns on rollup-serve, and you can configure the templateBase property to specify the path where the template index.html is located.
+The debug and development states automatically turns on rollup-serve, and you can configure the templateBase property to specify the path where the template index.html is located.
 
 ```js
   "formatConfig": {

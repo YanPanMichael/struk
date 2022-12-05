@@ -27,6 +27,8 @@ const replace = require('@rollup/plugin-replace')
 const autoprefixer = require('autoprefixer')
 // const syntaxDynamicImportPlugins = require('@babel/plugin-syntax-dynamic-import');
 const filesize = require('rollup-plugin-filesize')
+// const html = require('@rollup/plugin-html')
+const fs = require('fs')
 
 // UMD/IIFE shared settings: output.globals
 // Refer to https://rollupjs.org/guide/en#output-globals for details
@@ -43,6 +45,7 @@ const tempProperty = [
   'skipAlert',
   'formatConfig',
   'templateBase',
+  'devServeInput',
   'stylusAlias',
   'replaceMaps',
   'styleExtract'
@@ -201,15 +204,44 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         cliConfig.debug &&
         require('rollup-plugin-serve')({
           open: true, // 是否打开浏览器
-          contentBase: path.resolve(
-            process.cwd(),
-            strukConfig.templateBase ?? ''
-          ), // 入口html文件位置
+          contentBase: [
+            path.resolve(
+              process.cwd(),
+              strukConfig.templateBase ?? ''
+            ), // 入口html文件位置
+            path.resolve(
+              process.cwd(),
+              strukConfig.output?.directory ?? ''
+            ) // 入口dist文件位置
+          ],
           historyApiFallback: true, // return index.html instead of 404
           host: 'localhost',
           port: 3003,
+          // // set headers
+          // headers: {
+          //   'Access-Control-Allow-Origin': '*'
+          // },
+          // // execute function after server has begun listening
+          onListening: function (server) {
+            const address = server.address()
+            const host = address.address === '::' ? 'localhost' : address.address
+            // by using a bound function, we can access options as `this`
+            const protocol = this.https ? 'https' : 'http'
+            console.log(`Server listening at ${protocol}://${host}:${address.port}/`)
+          },
           verbose: true // 打印输出serve路径
         })
+      // process.env.NODE_ENV !== 'production' &&
+      //   cliConfig.debug &&
+      //   require('@rollup/plugin-html')({
+      //     dest: 'example',
+      //     filename: 'index.html',
+      //     template: () => fs.readFileSync(path.resolve(
+      //       process.cwd(),
+      //       './example/template.html'
+      //     )),
+      //     ignore: /cjs\.js/
+      //   })
       // livereload({
       //   watch: strukConfig.output.directory,
       //   port: 35729
@@ -506,6 +538,11 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         globals
       },
       external: [...new Set(externals)]
+    }
+
+    // 非prod环境并且是debug状态并且devServeInput有值时，切换input为指定example入口文件
+    if (!isProd && !!cliConfig.debug && !!strukConfig.devServeInput) {
+      config.input = strukConfig.devServeInput ?? ''
     }
 
     tempProperty.forEach((property) => {
