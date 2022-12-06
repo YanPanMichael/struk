@@ -17,7 +17,8 @@
     "newLine": "lf",
     "types": ["node", "vue"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "-/*": ["./dist/*"]
     },
     "plugins": [
       {
@@ -32,6 +33,8 @@
     "dist",
     "examples",
     "jest.config.js",
-    "struk.config.js"
-  ]
+    "struk.config.js",
+    "**/*.d.ts"
+  ],
+  "include": ["src"]
 }
