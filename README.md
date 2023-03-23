@@ -152,8 +152,13 @@ module.exports = ({ pkg } = {}) => {
       }
     },
     skipAlert: true, // 重复路径是否提示覆盖并继续构建，默认不提示 Whether the duplicate path prompts to override and continue building, it is not prompted by default
-    templateBase: 'examples/',
-    replaceMaps: {}
+    templateBase: 'examples/', // rollup-plugin-serve build base
+    // devServeInput: 'examples/index.js', // rollup-plugin-serve build input file
+    replaceMaps: {},
+    stylusAlias: {
+      '@': path.join(cwd, './node_modules/@')
+    },
+    styleExtract: false
   }
 }
 ```

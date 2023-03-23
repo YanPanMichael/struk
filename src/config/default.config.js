@@ -7,11 +7,10 @@ const isProd = require('../utils/index').isProd()
 
 module.exports = ({ pkg, cwd } = {}) => {
   return {
-    // 输入
+    // 输入 input
     input: 'src/index.js',
     // input: 'examples/react/index.tsx',
-
-    // 输出
+    // 输出 output
     output: {
       // 目录
       directory: 'dist',
