@@ -8,17 +8,17 @@
 [![MIT][license-badge]][license]
 [![Build Status - GitHub Actions][gha-badge]][gha-ci]
 
-> 📦 基于 rollup 的 JS、TS、Vue、React 包基础核心构建工具
-> One common construction and package tool for JS/TS/Vue/React components based on Rollup 📦
+> 📦 基于 rollup 的 JS、TS、Vue2、React 包基础核心构建工具
+> One common construction and package tool for JS/TS/Vue2/React components based on Rollup 📦
 
 ## ✨ Features
 
 - 基于 rollup 的基础核心构建工具
-- 支持 javascript、typescript、vue、react
+- 支持 Javascript、Typescript、Vue2、React
 - 支持自定义banner，可通过指定package中__cusBannerString__字段值修改本工具品牌名称
 
 - Basic core build tools based on rollup
-- Supports mutiple frameworks such as JavaScript, TypeScript, Vue, React
+- Supports mutiple frameworks such as JavaScript, TypeScript, Vue2, React
 - Support custom banner, you can modify the brand name of this tool by specifying the value of the __cusBannerString__ field in the package
 
 ## 🚀 Quick Start

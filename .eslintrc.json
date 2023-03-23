@@ -10,6 +10,7 @@
     "space-before-function-paren": ["error", "always"], // 方法前必须有空格
     "indent": [1, 2], // 缩进2
     "eqeqeq": 2, //必须使用全等
+    "no-extra-boolean-cast": 0,
     "no-multi-spaces": 0, //不能用多余的空格
     "no-inner-declarations": [2, "functions"], //禁止在块语句中使用声明（变量或函数）
     "no-irregular-whitespace": 2, //不能有不规则的空格

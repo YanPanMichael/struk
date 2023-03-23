@@ -205,14 +205,8 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
         require('rollup-plugin-serve')({
           open: true, // 是否打开浏览器
           contentBase: [
-            path.resolve(
-              process.cwd(),
-              strukConfig.templateBase ?? ''
-            ), // 入口html文件位置
-            path.resolve(
-              process.cwd(),
-              strukConfig.output?.directory ?? ''
-            ) // 入口dist文件位置
+            path.resolve(process.cwd(), strukConfig.templateBase ?? ''), // 入口html文件位置
+            path.resolve(process.cwd(), strukConfig.output?.directory ?? '') // 入口dist文件位置
           ],
           historyApiFallback: true, // return index.html instead of 404
           host: 'localhost',
@@ -227,7 +221,9 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
             const host = address.address === '::' ? 'localhost' : address.address
             // by using a bound function, we can access options as `this`
             const protocol = this.https ? 'https' : 'http'
-            console.log(`Server listening at ${protocol}://${host}:${address.port}/`)
+            console.log(
+              `Server listening at ${protocol}://${host}:${address.port}/`
+            )
           },
           verbose: true // 打印输出serve路径
         })
@@ -248,61 +244,86 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
       // }
     ]
   }
+  const commonJSConf = (esMod = true) => [
+    ...basePlugins.preConfig,
+    babel({
+      exclude: ['node_modules/**', 'struk.config.js'],
+      extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
+      babelHelpers: 'runtime',
+      // babelrc: false,
+      presets: [
+        basePlugins.babelPreset
+        // ["@babel/preset-typescript"]
+      ],
+      plugins: [
+        // syntaxDynamicImportPlugins,
+        [proposalDecoratorsPlugins, { legacy: true }],
+        [proposalClassPlugins, { loose: true }],
+        [runtimePlugins, { useESModules: esMod }]
+      ]
+    }),
+    ...basePlugins.postConfig
+  ]
+  const commonTSConf = [
+    ...basePlugins.preConfig,
+    ...basePlugins.postConfig,
+    typescript(basePlugins.tsConfig)
+  ]
+  const commonVue2Conf = (template = false, iBabel = false) => {
+    const vueParm = template
+      ? {
+        ...basePlugins.vue,
+        template
+      }
+      : basePlugins.vue
+    const babelParm = iBabel
+      ? {
+        ...basePlugins.babel,
+        presets: [basePlugins.babelPreset]
+      }
+      : basePlugins.babel
+    return [
+      ...basePlugins.preConfig,
+      vue(vueParm),
+      ...basePlugins.postConfig,
+      // Only use typescript for declarations - babel will
+      // do actual js transformations
+      typescript(basePlugins.tsConfig),
+      babel(babelParm)
+      // // !!isProd && terser({
+      //   toplevel: true,
+      //   output: {
+      //     ascii_only: true,
+      //     comments: RegExp(`${pkg.name}`) // 排除所有不含 pkg.name 的 banner
+      //   },
+      //   compress: {
+      //     drop_console: true,
+      //     pure_funcs: ['Math.floor']
+      //   },
+      // })
+    ]
+  }
+  const commonReactConf = [
+    ...basePlugins.preConfig,
+    // Only use typescript for declarations - babel will
+    // do actual js transformations
+    typescript(basePlugins.tsConfig),
+    ...basePlugins.postConfig,
+    babel({
+      ...basePlugins.babel,
+      presets: [basePlugins.babelPreset, ['@babel/preset-react']]
+    })
+  ]
 
   function mapFormatToConfig (format, sourceFormat) {
     // esm格式配置
     if (format === 'es') {
       const esPluginMap = {
-        js: [
-          ...basePlugins.preConfig,
-          babel({
-            exclude: ['node_modules/**', 'struk.config.js'],
-            extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
-            babelHelpers: 'runtime',
-            // babelrc: false,
-            presets: [
-              basePlugins.babelPreset
-              // ["@babel/preset-typescript"]
-            ],
-            plugins: [
-              // syntaxDynamicImportPlugins,
-              [proposalDecoratorsPlugins, { legacy: true }],
-              [proposalClassPlugins, { loose: true }],
-              [runtimePlugins, { useESModules: true }]
-            ]
-          }),
-          ...basePlugins.postConfig
-        ],
-        ts: [
-          ...basePlugins.preConfig,
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig)
-        ],
-        vue: [
-          ...basePlugins.preConfig,
-          vue(basePlugins.vue),
-          ...basePlugins.postConfig,
-          // Only use typescript for declarations - babel will
-          // do actual js transformations
-          typescript(basePlugins.tsConfig),
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset]
-          })
-        ],
-        react: [
-          ...basePlugins.preConfig,
-          // Only use typescript for declarations - babel will
-          // do actual js transformations
-          typescript(basePlugins.tsConfig),
-          ...basePlugins.postConfig,
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
-          })
-        ]
+        js: commonJSConf(true),
+        ts: commonTSConf,
+        vue: commonVue2Conf(false, true),
+        react: commonReactConf
       }
-
       const esPlugins = esPluginMap[sourceFormat] || []
       const esConfig = {
         ...baseConfig,
@@ -319,60 +340,14 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     // commonjs格式配置
     if (format === 'cjs') {
       const cjsPluginMap = {
-        js: [
-          ...basePlugins.preConfig,
-          babel({
-            exclude: ['node_modules/**', 'struk.config.js'],
-            extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
-            babelHelpers: 'runtime',
-            // babelrc: false,
-            presets: [
-              basePlugins.babelPreset
-              // ["@babel/preset-typescript"]
-            ],
-            plugins: [
-              // syntaxDynamicImportPlugins,
-              [proposalDecoratorsPlugins, { legacy: true }],
-              [proposalClassPlugins, { loose: true }],
-              [runtimePlugins, { useESModules: false }]
-            ]
-          }),
-          ...basePlugins.postConfig
-        ],
-        ts: [
-          ...basePlugins.preConfig,
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig)
-        ],
-        vue: [
-          ...basePlugins.preConfig,
-          vue({
-            ...basePlugins.vue,
-            template: {
-              ...basePlugins.vue.template,
-              optimizeSSR: true
-            }
-          }),
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig),
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset]
-          })
-        ],
-        react: [
-          ...basePlugins.preConfig,
-          // Only use typescript for declarations - babel will
-          // do actual js transformations
-          typescript(basePlugins.tsConfig),
-          ...basePlugins.postConfig,
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
-          })
-        ]
+        js: commonJSConf(false),
+        ts: commonTSConf,
+        vue: commonVue2Conf({
+          ...basePlugins.vue.template,
+          optimizeSSR: true
+        }, true),
+        react: commonReactConf
       }
-
       const cjsPlugins = cjsPluginMap[sourceFormat] || []
       const cjsConfig = {
         ...baseConfig,
@@ -389,58 +364,14 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     // umd格式配置
     if (format === 'umd') {
       const umdPluginMap = {
-        js: [
-          ...basePlugins.preConfig,
-          babel({
-            exclude: ['node_modules/**', 'struk.config.js'],
-            extensions: ['.mjs', '.js', '.jsx', '.vue', '.ts'],
-            babelHelpers: 'runtime',
-            // babelrc: false,
-            presets: [
-              basePlugins.babelPreset
-              // ["@babel/preset-typescript"]
-            ],
-            plugins: [
-              // syntaxDynamicImportPlugins,
-              [proposalDecoratorsPlugins, { legacy: true }],
-              [proposalClassPlugins, { loose: true }],
-              [runtimePlugins, { useESModules: false }]
-            ]
-          }),
-          ...basePlugins.postConfig
-        ],
-        ts: [
-          ...basePlugins.preConfig,
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig)
-        ],
-        vue: [
-          ...basePlugins.preConfig,
-          vue({
-            ...basePlugins.vue,
-            template: {
-              ...basePlugins.vue.template,
-              optimizeSSR: true
-            }
-          }),
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig),
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset]
-          })
-        ],
-        react: [
-          ...basePlugins.preConfig,
-          typescript(basePlugins.tsConfig),
-          ...basePlugins.postConfig,
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
-          })
-        ]
+        js: commonJSConf(false),
+        ts: commonTSConf,
+        vue: commonVue2Conf({
+          ...basePlugins.vue.template,
+          optimizeSSR: true
+        }, true),
+        react: commonReactConf
       }
-
       const umdPlugins = umdPluginMap[sourceFormat] || []
       const umdConfig = {
         ...baseConfig,
@@ -469,38 +400,9 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
           }),
           ...basePlugins.postConfig
         ],
-        ts: [
-          ...basePlugins.preConfig,
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig)
-        ],
-        vue: [
-          ...basePlugins.preConfig,
-          vue(basePlugins.vue),
-          ...basePlugins.postConfig,
-          typescript(basePlugins.tsConfig),
-          babel(basePlugins.babel)
-          // // !!isProd && terser({
-          //   toplevel: true,
-          //   output: {
-          //     ascii_only: true,
-          //     comments: RegExp(`${pkg.name}`) // 排除所有不含 pkg.name 的 banner
-          //   },
-          //   compress: {
-          //     drop_console: true,
-          //     pure_funcs: ['Math.floor']
-          //   },
-          // })
-        ],
-        react: [
-          ...basePlugins.preConfig,
-          typescript(basePlugins.tsConfig),
-          ...basePlugins.postConfig,
-          babel({
-            ...basePlugins.babel,
-            presets: [basePlugins.babelPreset, ['@babel/preset-react']]
-          })
-        ]
+        ts: commonTSConf,
+        vue: commonVue2Conf(),
+        react: commonReactConf
       }
       const unpkgPlugins = unpkgPluginsMap[sourceFormat] || []
       const unpkgConfig = {
