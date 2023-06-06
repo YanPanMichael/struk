@@ -1,6 +1,6 @@
 {
   "name": "struk",
-  "version": "1.3.9",
+  "version": "1.4.0",
   "description": "📦 基于rollup的JS、TS、Vue2、React包构建工具 | One common construction and package tool for JS/TS/Vue2/React components based on Rollup 📦",
   "author": "yanpanmichael",
   "license": "MIT",
