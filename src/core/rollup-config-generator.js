@@ -307,8 +307,8 @@ module.exports = (strukConfig, pkg, formatMapping, cliConfig) => {
     ...basePlugins.preConfig,
     // Only use typescript for declarations - babel will
     // do actual js transformations
-    typescript(basePlugins.tsConfig),
     ...basePlugins.postConfig,
+    typescript(basePlugins.tsConfig),
     babel({
       ...basePlugins.babel,
       presets: [basePlugins.babelPreset, ['@babel/preset-react']]
