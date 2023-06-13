@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [chan-log](https://github.com/conventional-changelog/chan-log) for commit guidelines.
 
+### [1.4.2](https://github.com/YanPanMichael/struk/compare/v1.4.1...v1.4.2) (2023-06-13)
+
+
+### Features
+
+* save ([e8999a2](https://github.com/YanPanMichael/struk/commit/e8999a2ae07a2410c4bbc47739d07f5be3e5fd3f))
+
+### [1.4.1](https://github.com/YanPanMichael/struk/compare/v1.4.0...v1.4.1) (2023-06-11)
+
+## [1.4.0](https://github.com/YanPanMichael/struk/compare/v1.3.9...v1.4.0) (2023-06-06)
+
+
+### Features
+
+* update the dependence version ([4f227e5](https://github.com/YanPanMichael/struk/commit/4f227e5811bde8d1d134c26e7fcabc5e02dff059))
+
 ### [1.3.9](https://github.com/YanPanMichael/struk/compare/v1.3.8...v1.3.9) (2023-05-24)
 
 

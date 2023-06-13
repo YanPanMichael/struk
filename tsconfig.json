@@ -31,6 +31,7 @@
   "exclude": [
     "node_modules",
     "dist",
+    "build",
     "examples",
     "jest.config.js",
     "struk.config.js",
